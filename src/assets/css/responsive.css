@@ -1,0 +1,17 @@
+.res-page-title{
+    font-size: 34px;
+}
+.res-page-subtitle{
+    font-size: 26px;
+}
+
+
+
+@media only screen and (max-width: 768px) {
+    .res-page-title{
+        font-size: 24px;
+    }
+    .res-page-subtitle{
+        font-size: 20px;
+    }
+}
