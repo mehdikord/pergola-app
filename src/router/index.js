@@ -4,6 +4,7 @@ import Auth from "@/views/auth/Auth.vue";
 import About from "@/views/about/About.vue";
 import Contact from "@/views/contact/Contact.vue";
 import Services from "@/views/services/Services.vue";
+import Hair_Coloring from "@/views/services/components/Hair_Coloring.vue";
 
 
 const router = createRouter({
@@ -47,7 +48,15 @@ const router = createRouter({
       name : 'services',
       meta : {
         title : "خدمات پرگولا"
-      }
+      },
+    },
+    {
+      path : '/services/coloring',
+      component : Hair_Coloring,
+      name : 'services_coloring',
+      meta : {
+        title : "خدمات ( تغییر رنگ مو )"
+      },
     },
   ],
 })

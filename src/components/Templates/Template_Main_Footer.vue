@@ -18,7 +18,7 @@ export default {
 
       <div class="col text-center">
         <router-link :to="{name : 'services'}">
-          <q-btn class="icon-size" v-if="this.$route.name === 'services'" round icon="fa-duotone fa-solid fa-paintbrush-pencil text-pink-8" color="white"></q-btn>
+          <q-btn class="icon-size" v-if="this.$route.name === 'services' || this.$route.name === 'services_coloring'" round icon="fa-duotone fa-solid fa-paintbrush-pencil text-pink-8" color="white"></q-btn>
           <q-btn class="icon-size" v-else round icon="fa-duotone fa-regular fa-paintbrush-pencil text-white" flat color="white"></q-btn>
         </router-link>
       </div>

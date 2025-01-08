@@ -8,7 +8,7 @@ export default {
       message:{
         name:null,
         phone:null,
-        messages:null
+        message:null
       }
     }
   },
@@ -57,8 +57,8 @@ export default {
         </div>
       </div>
     </q-card-section>
-    <q-separator/>
-    <q-card-section class="q-mt-sm">
+    <q-separator class="q-mt-md"/>
+    <q-card-section class="q-mt-md">
       <div class="text-center font-lalezar text-pink-6 animation-fade-in message-title">
         ثبت پیشنهادات و انتقادات
       </div>
@@ -74,20 +74,21 @@ export default {
           </q-input>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6 q-pa-sm">
-          <q-input v-model="message.name" outlined rounded label="شماره تماس (اختیاری)" color="blue-grey-8">
+          <q-input v-model="message.phone" outlined rounded label="شماره تماس (اختیاری)" color="blue-grey-8">
             <template v-slot:prepend>
               <q-icon name="fa-duotone fa-solid fa-mobile-button text-purple-7" />
             </template>
           </q-input>
         </div>
         <div class="col-12 q-pa-sm q-mt-sm">
-          <q-input v-model="message.name" outlined rounded label="پیام شما" color="blue-grey-8" type="textarea" rows="5">
+          <q-input v-model="message.message" outlined rounded label="پیام شما" color="blue-grey-8" type="textarea" rows="5">
             <template v-slot:prepend>
               <q-icon name="fa-duotone fa-solid fa-message text-purple-7" />
             </template>
           </q-input>
         </div>
         <div class="col-12 q-pa-sm q-mt-sm">
+
           <q-btn class="send-btn" icon="fa-duotone fa-regular fa-send text-white" glossy push rounded label="ارسال پیام" color="pink-6"></q-btn>
 
         </div>
