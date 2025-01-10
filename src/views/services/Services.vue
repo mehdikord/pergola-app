@@ -22,6 +22,9 @@ export default {
               </div>
               <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
                 <strong class="service-title text-purple-9">تغییر رنگ مو</strong>
+                <div class="q-mt-sm text-grey-8 service-subtitle">
+                  راهنما کامل تغییر رنگ مو با بروز ترین متد ها
+                </div>
               </div>
             </div>
           </div>
@@ -35,6 +38,9 @@ export default {
               </div>
               <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
                 <strong class="service-title text-purple-9">آنالیز با هوش مصنوعی</strong>
+                <div class="q-mt-sm text-grey-8 service-subtitle">
+                  طراحی چهره شما با تغییرات دلخواه توسط هوش مصنوعی
+                </div>
               </div>
             </div>
 
@@ -59,13 +65,18 @@ export default {
   font-size: 19px;
 
 }
+.service-subtitle{
+  font-size: 14px;
+}
 @media only screen and (max-width: 768px) {
   .service-img{
     width: 50px;
   }
   .service-title{
     font-size: 15px;
-
+  }
+  .service-subtitle{
+    font-size: 12.5px;
   }
 }
 </style>
