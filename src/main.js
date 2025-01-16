@@ -10,6 +10,7 @@ import quasarIconSet from 'quasar/icon-set/mdi-v7'
 import { createPinia } from 'pinia';
 import piniaPluginPersistedState from 'pinia-plugin-persistedstate';
 import methods from './helpers/methods.js';
+import './helpers/axios.js';
 // Import icon libraries
 import '@quasar/extras/mdi-v7/mdi-v7.css'
 // Import CSSs
@@ -18,7 +19,10 @@ import 'assets/css/app.css'
 import 'assets/css/font.css'
 import 'assets/css/animations.css'
 import 'assets/css/responsive.css'
-import Global_Loadings_Colorful from "@/components/global/loading/Global_Loadings_Colorful.vue";
+import moment from "moment-jalaali";
+import {Stores_Auth} from "@/stores/auth/auth.js";
+
+
 
 
 
@@ -29,7 +33,6 @@ import Global_Loadings_Colorful from "@/components/global/loading/Global_Loading
 // App configs and uses
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 const app = createApp(App)
-
 app.use(router)
 app.use(Quasar, {
         plugins: {
@@ -67,8 +70,11 @@ app.config.globalProperties.$filters={
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Globals components
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+import Global_Loadings_Colorful from "@/components/global/loading/Global_Loadings_Colorful.vue";
+import Global_Validations_Errors from "@/components/global/validations/Global_Validations_Errors.vue";
 
 app.component("global_loading_colorful",Global_Loadings_Colorful)
+app.component("global_validations_errors",Global_Validations_Errors)
 
 
 
@@ -78,6 +84,7 @@ app.mixin(methods);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedState);
 app.use(pinia);
+Stores_Auth().AuthSyncData();
 app.mount('#app')
 
 

@@ -56,7 +56,7 @@ export default {
 
 @media only screen and (max-width: 768px) {
   .icon-size{
-    font-size:13px;
+    font-size:15px;
   }
 
 }

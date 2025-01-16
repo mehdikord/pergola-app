@@ -1,26 +1,70 @@
 <script>
+import {Stores_Auth} from "@/stores/auth/auth.js";
+
 export default {
   name: "Auth",
+  created() {
+    if (localStorage.getItem('pergola_otp_phone')){
+      this.phone_form=false;
+      this.phone = localStorage.getItem('pergola_otp_phone')
+    }
+
+  },
   data(){
     return {
       phone_loading:false,
       code_loading:false,
       phone_form:true,
       phone:null,
-      code:null
+      code:null,
+      errors:[]
     }
   },
   methods:{
     Send_Phone(){
       this.phone_loading=true;
+      axios.post("/users/auth/otp/send",{phone : this.phone}).then(res => {
+        this.Methods_Notify_Message_Success("کد احراز هویت به شماره موبایل شما ارسال شد");
+        localStorage.setItem('pergola_otp_phone',this.phone);
+        this.phone_form = false;
+        this.phone_loading=false;
+      }).catch(error => {
+        if (error.response.status === 409){
+          this.Methods_Notify_Message_Error(error.response.data.error)
+        }else{
+          this.Methods_Notify_Error_Server();
+        }
+        this.phone_loading=false;
 
-      this.phone_form=false;
+      })
+
 
     },
     Send_Code(){
-      this.phone_loading=true;
+      this.code_loading=true;
+      let data = {
+        code : this.code,
+        phone : this.phone
+      }
+      axios.post("/users/auth/otp/verify",data).then(res => {
+        Stores_Auth().AuthLogin(res.data.result.user,res.data.result.token)
+        localStorage.removeItem('pergola_otp_phone');
+        this.Methods_Notify_Message_Success("باموفقیت وارد حساب کاربری خود شدید");
+        this.$router.push({name : 'index'})
+      }).catch(error => {
+        if (error.response.status === 422) {
+          this.errors = error.response.data;
+          this.Methods_Validation_Notify();
+        }else if (error.response.status === 409){
+          this.Methods_Notify_Message_Error(error.response.data.error)
+        }else{
+          this.Methods_Notify_Error_Server();
+        }
+        this.code_loading=false;
 
-      this.phone_form=false;
+      })
+
+
 
     },
 
@@ -47,10 +91,13 @@ export default {
           <div class="col-sm-9 col-xs-10 col-md-6 col-lg-4 col-xl-4 text-center">
             <strong class="text-pink-7">شماره موبایل خود را وارد کنید</strong>
             <div class="q-mt-md">
-              <q-input v-model="phone" dir="ltr" outlined rounded color="blue-grey-4" placeholder="09XX XXX XXXX" >
+
+              <q-input  v-model="phone" type="number" dir="ltr" outlined rounded color="blue-grey-4" placeholder="09XX XXX XXXX" >
                 <template v-slot:append>
                   <q-icon name="fa-duotone fa-regular fa-mobile-button text-deep-purple-9" />
                 </template>
+
+
               </q-input>
             </div>
             <div class="q-mt-lg text-center">
@@ -65,14 +112,20 @@ export default {
           <div class="col-sm-9 col-xs-10 col-md-6 col-lg-4 col-xl-4 text-center">
             <strong class="text-pink-7">کد پیامک شده به شماره موبایل را وارد کنید</strong>
             <div class="q-mt-md">
-              <q-input v-model="code" dir="ltr" outlined rounded color="blue-grey-4" placeholder="X X X X X X" >
+              <q-input :error="this.Methods_Validation_Check(errors,'code')" v-model="code" dir="ltr" outlined rounded color="blue-grey-4" placeholder="X X X X X X" >
                 <template v-slot:append>
                   <q-icon name="fa-duotone fa-regular fa-message-sms text-deep-purple-9" />
+                </template>
+                <template v-slot:error>
+                  <global_validations_errors :errors="this.Methods_Validation_Errors(errors,'code')" />
                 </template>
               </q-input>
             </div>
             <div class="q-mt-lg text-center">
               <q-btn @click="Send_Code" :loading="code_loading" class="auth-btn" glossy push rounded label="ارسال کد و ورود به حساب " color="purple-5" style="width: 100%"></q-btn>
+              <div class="q-mt-lg">
+                <strong @click="phone_form = true" class="text-blue-8 cursor-pointer">ویرایش شماره موبایل</strong>
+              </div>
             </div>
           </div>
         </div>

@@ -5,7 +5,9 @@ import About from "@/views/about/About.vue";
 import Contact from "@/views/contact/Contact.vue";
 import Services from "@/views/services/Services.vue";
 import Hair_Coloring from "@/views/services/components/Hair_Coloring.vue";
+import Profile from "@/views/profile/Profile.vue";
 
+import {Stores_Auth} from "@/stores/auth/auth.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,7 +60,27 @@ const router = createRouter({
         title : "خدمات ( تغییر رنگ مو )"
       },
     },
+    {
+      path: '/profile',
+      component: Profile,
+      name: 'profile',
+      meta: {
+        title: "حساب کاربری"
+      },
+    }
   ],
 })
-
+// Check Authenticate
+router.beforeEach((to, from, next) => {
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if (to.path === '/profile' && !Stores_Auth().AuthGetCheckAuth) {
+    next('/auth');
+  }else if (to.path === '/auth' && Stores_Auth().AuthGetCheckAuth){
+    next('/profile');
+  }
+  else {
+    next();
+  }
+});
 export default router
