@@ -1,188 +1,24 @@
 <script>
+import {Stores_Auth} from "@/stores/auth/auth.js";
+import {Stores_Colors} from "@/stores/colors/colors.js";
+import {Stores_Options} from "@/stores/options/options.js";
+
 export default {
   name: "Hair_Coloring",
   mounted() {
-
+    this.Get_From_Colors();
+    this.Get_To_Colors();
+    this.Get_Options();
   },
   data(){
     return {
-      colors : [
-        {
-          label : "بلوند آفتابی",
-          value : "#e2c295",
-        },
-        {
-          label : "بلوند الماسی",
-          value : "#d5bba1",
-        },
-        {
-          label : "کاراملی",
-          value : "#996b4b",
-        },
-        {
-          label : "تافی تیره",
-          value : "#704c38",
-        },
-        {
-          label : "کهربایی درخشان",
-          value : "#ac7f65",
-        },
-        {
-          label : "قهوه‌ای هاوانایی",
-          value : "#351c12",
-        },
-        {
-          label : "اسپرسو",
-          value : "#452f2c",
-        },
-        {
-          label : "مسی درخشان",
-          value : "#bb6d4d",
-        },
-        {
-          label : "یاقوتی براق",
-          value : "#8b444a",
-        },
-        {
-          label : "لعل تیره",
-          value : "#442825",
-        },
-        {
-          label : "شرابی بورگاندی",
-          value : "#6b3945",
-        },
-        {
-          label : "گیلاس شکلاتی",
-          value : "#6b4252",
-        },
-        {
-          label : "مشکی چرمی",
-          value : "#0e1013",
-        },
-        {
-          label : "بلوند خاکستری",
-          value : "#c9a17d",
-        },
-        {
-          label : "بلوند طلایی",
-          value : "#d5b68f",
-        },
-        {
-          label : "عسلی",
-          value : "#c79164",
-        },
-        {
-          label : "باتراسکاچ",
-          value : "#513118",
-        },
-        {
-          label : "قهوه‌ای سرد",
-          value : "#705948",
-        },
-        {
-          label : "مشکی مات",
-          value : "#070a07",
-        },
-        {
-          label : "قرمز دارچینی",
-          value : "#623b29",
-        },
-        {
-          label : "قرمز طلایی",
-          value : "#a42b08",
-        },
-      ],
-      conditions:{
-        whites:[
-          {
-            label : "صفر",
-            value : 1
-          },
-          {
-            label : "خیلی کم",
-            value : 2
-          },
-          {
-            label : "حدود 50 درصد",
-            value : 3
-          },
-          {
-            label : "بالا 50 درصد",
-            value : 4
-          }
-        ],
-        declare:[
-          {
-            label : "صفر",
-            value : 1
-          },
-          {
-            label : "20 درصد",
-            value : 2
-          },
-          {
-            label : "50 درصد",
-            value : 3
-          },
-          {
-            label : "80 درصد",
-            value : 4
-          },
-          {
-            label : "100 درصد",
-            value : 5
-          }
-        ],
-        base:[
-          {
-            label : "قرمزی",
-            value : 1
-          },
-          {
-            label : "زردی",
-            value : 2
-          },
-          {
-            label : "نارنجی",
-            value : 3
-          },
-          {
-            label : "زیتونی",
-            value : 4
-          },
-          {
-            label : "مشکی",
-            value : 5
-          }
-        ],
-        consolidated:[
-          {
-            label : "آمبره",
-            value : 1
-          },
-          {
-            label : "لایت",
-            value : 2
-          },
-          {
-            label : "بالیاژ",
-            value : 3
-          },
-          {
-            label : "سامبره",
-            value : 4
-          },
-        ],
-      },
+      from_colors:[],
+      to_colors:[],
+      options:[],
       items :{
-        first_color : null,
-        second_color : null,
-        conditions : {
-          whites:null,
-          declare:null,
-          base:null,
-          consolidated:null,
-        }
+        from_color_id : null,
+        to_color_id : null,
+        items:[],
       },
       info_dialog:false,
       loading:false,
@@ -190,6 +26,69 @@ export default {
     }
   },
   methods:{
+    Get_From_Colors(){
+      Stores_Colors().All().then(res => {
+        this.from_colors = [];
+        res.data.result.forEach(item => {
+          this.from_colors.push({
+            value : item.id,
+            label : item.name,
+            color : item.color,
+          });
+        })
+
+      })
+    },
+    Get_To_Colors(){
+      Stores_Colors().All().then(res => {
+        this.to_colors = [];
+        res.data.result.forEach(item => {
+          this.to_colors.push({
+            value : item.id,
+            label : item.name,
+            color : item.color,
+          });
+        })
+
+      })
+    },
+    Get_Options() {
+      Stores_Options().All().then(res => {
+        this.options = res.data.result;
+        this.options.forEach( item=> {
+          this.items.items[item.id]={id : item.id,value : null}
+          let new_items=[];
+          item.items.forEach( get_item=> {
+            new_items.push({value: get_item.id, label: get_item.item});
+          })
+          item.items = new_items;
+        });
+
+      })
+    },
+
+    Filter_From_Color_Select (val, update, abort) {
+      update(() => {
+        if (val){
+          this.from_colors =  this.from_colors.filter(item => {
+            return item.label !== null && item.label.match(val)
+          })
+        }else {
+          this.Get_From_Colors();
+        }
+      })
+    },
+    Filter_To_Color_Select (val, update, abort) {
+      update(() => {
+        if (val){
+          this.to_colors =  this.to_colors.filter(item => {
+            return item.label !== null && item.label.match(val)
+          })
+        }else {
+          this.Get_To_Colors();
+        }
+      })
+    },
     Send_Items(){
       if (!this.items.second_color || !this.items.first_color){
         return this.Methods_Notify_Message_Error('موارد خواسته شده را تکمیل کنید')
@@ -212,7 +111,14 @@ export default {
   },
   computed:{
     CheckInfo(){
-      return !!(this.items.conditions.base && this.items.conditions.consolidated && this.items.conditions.declare && this.items.conditions.whites);
+      let check = true;
+      this.items.items.forEach(item => {
+        if (!item.value){
+          check = false;
+        }
+
+      })
+      return check;
     }
   }
 }
@@ -314,7 +220,6 @@ export default {
 
 
         </q-card-section>
-
       </template>
       <template v-else>
         <q-card-section>
@@ -328,20 +233,20 @@ export default {
             <q-select
                 class="q-mt-sm"
                 outlined
-                :options="colors"
+                :options="from_colors"
                 emit-value
                 map-options
                 use-input
-                v-model="items.second_color"
-                position="top"
+                v-model="items.from_color_id"
                 clearable
+                @filter="Filter_From_Color_Select"
                 color="purple-3"
                 clear-icon="fa-duotone fa-solid fa-times-circle text-red-8 font-22"
             >
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps">
                   <q-item-section avatar>
-                    <div class="tear" :style="'background-color:'+scope.opt.value"></div>
+                    <div class="tear" :style="'background-color:'+scope.opt.color"></div>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>
@@ -355,7 +260,7 @@ export default {
               <template v-slot:selected-item="scope">
                 <q-item v-bind="scope.itemProps">
                   <q-item-section avatar>
-                    <div class="tear-selected" :style="'background-color:'+scope.opt.value"></div>
+                    <div class="tear-selected" :style="'background-color:'+scope.opt.color"></div>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>
@@ -366,8 +271,6 @@ export default {
                   </q-item-section>
                 </q-item>
               </template>
-
-
             </q-select>
           </div>
           <div class="q-mt-lg">
@@ -375,20 +278,21 @@ export default {
             <q-select
                 class="q-mt-sm"
                 outlined
-                :options="colors"
+                :options="to_colors"
                 emit-value
                 map-options
                 use-input
-                v-model="items.first_color"
+                v-model="items.to_color_id"
                 position="top"
                 clearable
+                @filter="Filter_To_Color_Select"
                 color="purple-3"
                 clear-icon="fa-duotone fa-solid fa-times-circle text-red-8 font-22"
             >
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps">
                   <q-item-section avatar>
-                    <div class="tear" :style="'background-color:'+scope.opt.value"></div>
+                    <div class="tear" :style="'background-color:'+scope.opt.color"></div>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>
@@ -402,7 +306,7 @@ export default {
               <template v-slot:selected-item="scope">
                 <q-item v-bind="scope.itemProps">
                   <q-item-section avatar>
-                    <div class="tear-selected" :style="'background-color:'+scope.opt.value"></div>
+                    <div class="tear-selected" :style="'background-color:'+scope.opt.color"></div>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>
@@ -414,13 +318,12 @@ export default {
                 </q-item>
               </template>
 
-
             </q-select>
           </div>
           <div class="q-mt-lg">
             <label for="" class="text-pink-7"><strong>اطلاعات مورد نیاز</strong></label>
             <div class="q-mt-sm info-box cursor-pointer" @click="info_dialog= !info_dialog">
-              <div v-if="!CheckInfo" class="text-center text-grey-9">
+              <div v-if="!CheckInfo" class="text-center text-grey-10">
                 وارد کردن اطلاعات
               </div>
               <div v-else class="text-center">
@@ -435,62 +338,35 @@ export default {
                 <q-card-section>
                   <label for="" class="text-pink-7 font-15"><strong>وارد کردن اطلاعات</strong></label>
                 </q-card-section>
+                <q-separator/>
                 <q-card-section class="q-pt-sm">
-                  <div>
+                  <div v-for="option in options" class="col-md-4 col-xs-12 q-px-sm q-mb-sm">
                     <q-select
+                        class="q-mt-lg"
                         outlined
-                        :options="conditions.whites"
+                        :label="option.name"
+                        :options="option.items"
                         emit-value
                         map-options
-                        v-model="items.conditions.whites"
-                        label="میزان سفیدی"
-                        color="purple-8"
-                        rounded
+                        position="top"
+                        v-model="items.items[option.id].value"
                     >
+                      <template v-slot:option="scope">
+                        <q-item v-bind="scope.itemProps">
+                          <q-item-section>
+                            <q-item-label>
+                              {{ scope.opt.label }}
+                            </q-item-label>
+                          </q-item-section>
+                        </q-item>
+                      </template>
+
                     </q-select>
                   </div>
-                  <div class="q-mt-lg">
-                    <q-select
-                        outlined
-                        :options="conditions.declare"
-                        emit-value
-                        map-options
-                        v-model="items.conditions.declare"
-                        label="میزان دکلره"
-                        color="purple-8"
-                        rounded
-                    >
-                    </q-select>
-                  </div>
-                  <div class="q-mt-lg">
-                    <q-select
-                        outlined
-                        :options="conditions.base"
-                        emit-value
-                        map-options
-                        v-model="items.conditions.base"
-                        label="رنگ پایه"
-                        color="purple-8"
-                        rounded
-                    >
-                    </q-select>
-                  </div>
-                  <div class="q-mt-lg">
-                    <q-select
-                        outlined
-                        :options="conditions.consolidated"
-                        emit-value
-                        map-options
-                        v-model="items.conditions.consolidated"
-                        label="تلفیقی"
-                        color="purple-8"
-                        rounded
-                    >
-                    </q-select>
-                  </div>
+
                 </q-card-section>
                 <q-card-actions align="left" class="q-mb-sm q-px-md">
-                  <q-btn class="font-14" color="pink-5" rounded glossy label="‌ثبت اطلاعات" v-close-popup />
+                  <q-btn class="font-14 items-btn" color="pink-5"  rounded glossy label="‌ثبت اطلاعات" v-close-popup />
                 </q-card-actions>
               </q-card>
             </q-dialog>
@@ -590,6 +466,10 @@ export default {
   }
   .answer-number{
     font-size: 11px !important;
+  }
+  .items-btn{
+    width: 100%;
+    padding: 8px 5px!important;
   }
 }
 

@@ -8,6 +8,7 @@ import Hair_Coloring from "@/views/services/components/Hair_Coloring.vue";
 import Profile from "@/views/profile/Profile.vue";
 
 import {Stores_Auth} from "@/stores/auth/auth.js";
+import Plans from "@/views/plans/Plans.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +51,14 @@ const router = createRouter({
       name : 'services',
       meta : {
         title : "خدمات پرگولا"
+      },
+    },
+    {
+      path : '/plans',
+      component : Plans,
+      name : 'plans',
+      meta : {
+        title : "مدیریت اشتراک ها"
       },
     },
     {

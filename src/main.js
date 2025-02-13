@@ -10,6 +10,7 @@ import quasarIconSet from 'quasar/icon-set/mdi-v7'
 import { createPinia } from 'pinia';
 import piniaPluginPersistedState from 'pinia-plugin-persistedstate';
 import methods from './helpers/methods.js';
+import before_created from "@/helpers/before_created.js";
 import './helpers/axios.js';
 // Import icon libraries
 import '@quasar/extras/mdi-v7/mdi-v7.css'
@@ -79,7 +80,7 @@ app.component("global_validations_errors",Global_Validations_Errors)
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+app.mixin(before_created);
 app.mixin(methods);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedState);

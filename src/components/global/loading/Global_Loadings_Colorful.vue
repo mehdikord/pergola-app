@@ -16,7 +16,9 @@ export default {
 </script>
 
 <template>
-
+  <div class="text-center">
+    <img src="assets/images/icons/loading_animation.svg" :width="image_width" alt="">
+  </div>
 </template>
 
 <style scoped>
