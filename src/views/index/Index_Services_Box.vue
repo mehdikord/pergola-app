@@ -49,7 +49,7 @@ export default {
 }
 @media only screen and (max-width: 768px) {
   .service-box{
-    padding: 14px 10px;
+    padding: 16px 10px;
     border-radius: 20px;
   }
   .service-icon{
