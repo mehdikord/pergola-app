@@ -19,7 +19,7 @@ export default {
     methods:{
 
         //All notifications methods
-        Methods_Notify_Generator(message,color='pink-7',icon='fas fa-envelope-open-text',caption=null,timeout=null,position='bottom'){
+        Methods_Notify_Generator(message,color='pink-7',icon='fas fa-envelope-open-text',caption=null,timeout=null,position='top'){
             this.$q.notify({
                 message: message,
                 color : color,

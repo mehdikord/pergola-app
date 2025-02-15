@@ -56,7 +56,7 @@ export default {
 
 }
 .header-bg{
-  background-color: rgba(112, 6, 122, 0.15) !important;
+  background-color: rgb(208, 208, 208) !important;
 }
 
 </style>
