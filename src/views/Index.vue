@@ -1,10 +1,12 @@
 <script>
 import Index_Services_Box from "@/views/index/Index_Services_Box.vue";
+import Index_Question_Box from "@/views/index/Index_Question_Box.vue";
 
 export default {
   name: "Index",
   components: {
     'index_services_box' : Index_Services_Box,
+    'index_question_box' : Index_Question_Box
   },
 
   data(){
@@ -29,9 +31,9 @@ export default {
       </div>
       <div class="q-mt-lg">
         <index_services_box></index_services_box>
-        <q-separator class="q-mt-md q-mb-sm"/>
-
       </div>
+      <q-separator class="q-mt-md q-mb-sm"/>
+      <index_question_box></index_question_box>
     </q-card-section>
 
   </q-card>
