@@ -17,7 +17,7 @@ export default {
 }
 @media only screen and (max-width: 768px) {
   .question-icon {
-    font-size: 36px;
+    font-size: 39px;
   }
 }
 @keyframes float {
