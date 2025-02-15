@@ -46,7 +46,7 @@ export default {
 
 }
 .menu-box{
-  background-color: rgba(134, 70, 156, 0.96) !important;
+  background-color: rgba(14, 49, 121, 0.91) !important;
   padding: 8px 15px 8px 15px;
   margin-bottom: 8px;
   margin-left: 5px;
