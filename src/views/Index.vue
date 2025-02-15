@@ -1,6 +1,11 @@
 <script>
+import Index_Services_Box from "@/views/index/Index_Services_Box.vue";
+
 export default {
   name: "Index",
+  components: {
+    'index_services_box' : Index_Services_Box,
+  },
 
   data(){
     return{
@@ -13,16 +18,18 @@ export default {
 <template>
 
   <q-card flat >
-    <q-card-section >
+    <q-card-section class="q-px-xs">
       <div class=" text-center">
         <img class="logo-image" src="assets/images/icons/logo.png" alt="">
       </div>
-      <div class="text-center subtitle-text">
+      <div class="text-center subtitle-text q-mt-sm">
         <strong class="text-pink-9">
           پرگولا اولین پلتفرم اختصاصی مو و رنگ مو
         </strong>
       </div>
-      <div class="q-mt-lg text-center">
+      <div class="q-mt-lg">
+        <index_services_box></index_services_box>
+        <q-separator class="q-mt-md q-mb-sm"/>
 
       </div>
     </q-card-section>
@@ -31,18 +38,16 @@ export default {
 </template>
 
 <style scoped>
-.title-text{
-  font-size: 45px;
-}
+
 .subtitle-text{
-  font-size: 17px;
+  font-size: 19px;
 }
 .logo-image{
   width: 340px;
 }
 @media only screen and (max-width: 768px) {
-  .title-text{
-    font-size: 32px;
+  .subtitle-text{
+    font-size: 16px;
   }
   .logo-image{
     width: 260px;
