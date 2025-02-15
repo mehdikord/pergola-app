@@ -2,6 +2,7 @@
 import {Stores_Auth} from "@/stores/auth/auth.js";
 import {Stores_Colors} from "@/stores/colors/colors.js";
 import {Stores_Options} from "@/stores/options/options.js";
+import {Stores_Plans} from "@/stores/plans/plans.js";
 
 export default {
   name: "Hair_Coloring",
@@ -9,6 +10,9 @@ export default {
     this.Get_From_Colors();
     this.Get_To_Colors();
     this.Get_Options();
+    if (Stores_Auth().AuthGetCheckAuth){
+      this.User_Plan_Active();
+    }
   },
   data(){
     return {
@@ -23,9 +27,12 @@ export default {
       info_dialog:false,
       loading:false,
       answer:null,
+      dialog_auth:false,
+      active_plan: null,
     }
   },
   methods:{
+    Stores_Auth,
     Get_From_Colors(){
       Stores_Colors().All().then(res => {
         this.from_colors = [];
@@ -66,7 +73,13 @@ export default {
 
       })
     },
-
+    User_Plan_Active(){
+      Stores_Plans().Active().then(res=> {
+        this.active_plan = res.data.result;
+      }).catch(error=>{
+        this.Methods_Notify_Error_Server();
+      })
+    },
     Filter_From_Color_Select (val, update, abort) {
       update(() => {
         if (val){
@@ -90,6 +103,12 @@ export default {
       })
     },
     Send_Items(){
+      if (!Stores_Auth().AuthGetCheckAuth){
+        return this.dialog_auth = true
+      }
+      if (!this.active_plan){
+        return this.dialog_auth = true
+      }
       if (!this.items.second_color || !this.items.first_color){
         return this.Methods_Notify_Message_Error('موارد خواسته شده را تکمیل کنید')
       }
@@ -98,6 +117,7 @@ export default {
         this.answer = 'yes';
         this.loading = false;
       }, 1500);
+
     },
     Find_Color(color){
       let find = null;
@@ -372,16 +392,49 @@ export default {
             </q-dialog>
           </div>
           <div class="q-mt-xl text-center">
-            <q-btn glossy @click="Send_Items" color="purple-7" label="ثبت و محاسبه اطلاعات شما" class="submit-btn"></q-btn>
+            <q-btn rounded glossy @click="Send_Items" color="purple-7" label="ثبت و محاسبه اطلاعات شما" class="submit-btn"></q-btn>
           </div>
+          <q-dialog
+              v-model="dialog_auth"
+              position="top"
+          >
+            <q-card style="width: 100%">
+              <q-card-section v-if="Stores_Auth().AuthGetCheckAuth">
+                <div class="text-center q-mt-md">
+                  <img class="bg-image" src="assets/images/background/plan_need.svg" alt="">
+                  <div class="q-mt-sm">
+                    <strong>
+                      برای استفاده از این قابلیت باید اشتراک ویژه داشته باشید !
+                    </strong>
+                  </div>
+                  <div class="q-mt-md">
+                    <q-btn :to="{name : 'plans'}" class="auth-btn" color="pink-7" glossy rounded size="sm" label="دریافت اشتراک ویژه"></q-btn>
+                  </div>
+                </div>
+              </q-card-section>
+              <q-card-section v-else>
+                <div class="text-center q-mt-md">
+                  <img class="bg-image" src="assets/images/background/login_need.svg" alt="">
+                  <div class="q-mt-sm">
+                    <strong>
+                      برای انجام محاسبات ابتدا باید وار حساب کاربری خود شوید
+                    </strong>
+                  </div>
+                  <div class="q-mt-md">
+                    <q-btn :to="{name : 'auth'}" class="auth-btn" color="pink-7" glossy rounded size="sm" label="ورود / ثبت نام در پرگولا"></q-btn>
+                  </div>
+                </div>
+              </q-card-section>
+              <q-card-actions align="right" class="q-mb-sm q-px-md q-mt-sm">
+                <q-btn size="sm" class="submit-btn" color="grey-8"  rounded glossy label="بستن" icon="fa-duotone fa-solid fa-times-circle" v-close-popup />
+              </q-card-actions>
 
-
+            </q-card>
+          </q-dialog>
 
         </q-card-section>
       </template>
     </template>
-
-
   </q-card>
 
 
@@ -418,7 +471,6 @@ export default {
   padding: 10px 50px;
   font-size: 14.5px;
   font-weight: bold;
-  border-radius:6px;
 }
 .loading-text{
   font-size: 17.5px;
@@ -436,6 +488,15 @@ export default {
   font-size: 15px;
 }
 
+.bg-image{
+  width: 250px !important;
+}
+.auth-btn{
+  font-size: 15px !important;
+}
+.submit-btn{
+  font-size: 14px !important;
+}
 @media only screen and (max-width: 768px) {
   .bread-img{
     width: 38px;
@@ -471,9 +532,14 @@ export default {
     width: 100%;
     padding: 8px 5px!important;
   }
+  .bg-image{
+    width: 200px !important;
+  }
+  .auth-btn{
+    font-size: 14px !important;
+  }
+  .submit-btn{
+    font-size: 12px !important;
+  }
 }
-
-
-
-
 </style>

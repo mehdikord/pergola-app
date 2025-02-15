@@ -1,18 +1,18 @@
 import { defineStore } from 'pinia'
-export const Stores_Plans = defineStore('plans',{
+export const Stores_Profile = defineStore('profile',{
     actions : {
-        Active(){
+        Index(){
             return new Promise((resolve, reject) => {
-                axios.get('users/plans/active').then(response =>{
+                axios.get('/users/profile').then(response =>{
                     return resolve(response);
                 }).catch(error =>{
                     return reject(error);
                 })
             })
         },
-        All(){
+        Edit(items){
             return new Promise((resolve, reject) => {
-                axios.get('users/plans/all').then(response =>{
+                axios.put('/users/profile',items).then(response =>{
                     return resolve(response);
                 }).catch(error =>{
                     return reject(error);

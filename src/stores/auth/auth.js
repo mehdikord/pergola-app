@@ -11,7 +11,12 @@ export const Stores_Auth = defineStore('auth',{
             localStorage.setItem('pergola_token', token)
             localStorage.setItem('pergola_user', JSON.stringify(user));
         },
-
+        AuthLogout(){
+            this.user = null;
+            this.token = null
+            localStorage.removeItem('pergola_token')
+            localStorage.removeItem('pergola_user');
+        },
         AuthSyncData(){
             if (localStorage.getItem('pergola_token')){
                 this.token = localStorage.getItem('pergola_token');
@@ -24,6 +29,9 @@ export const Stores_Auth = defineStore('auth',{
     getters :{
         AuthGetUser(){
             return this.user;
+        },
+        AuthGetToken(){
+            return this.token;
         },
         AuthGetCheckAuth(){
             return !!this.token;

@@ -62,6 +62,15 @@ app.config.globalProperties.$filters={
         }
 
     },
+    date_jalali(value,format='jYYYY/jM/jD  H:m:s'){
+        return moment(value).format(format);
+    },
+
+    number_format(value){
+        if (value){
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    },
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

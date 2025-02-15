@@ -1,20 +1,52 @@
 <script>
 
 import {Stores_Auth} from "@/stores/auth/auth.js";
+import {Stores_Plans} from "@/stores/plans/plans.js";
+import Plans_Single_Item from "@/views/plans/components/Plans_Single_Item.vue";
 
 export default {
   name: "Plans",
+  components: {
+    'plan_single' : Plans_Single_Item,
+  },
+  mounted() {
+    if (Stores_Auth().AuthGetCheckAuth){
+      this.User_Plan_Active();
+    }
+    this.Get_All_Plans();
+
+  },
   data() {
     return {
       active_plan_loading: true,
       active_plan: null,
+      plans_loading: true,
+      plans:[],
 
 
     }
   },
   methods: {
-    Stores_Auth
+    Stores_Auth,
+    User_Plan_Active(){
+      Stores_Plans().Active().then(res=> {
+        this.active_plan = res.data.result;
+        this.active_plan_loading = false;
+      }).catch(error=>{
+        this.Methods_Notify_Error_Server();
 
+
+      })
+
+    },
+    Get_All_Plans(){
+      Stores_Plans().All().then(res=> {
+        this.plans = res.data.result;
+        this.plans_loading = false;
+      }).catch(error=>{
+        this.Methods_Notify_Error_Server();
+      })
+    }
   }
 }
 
@@ -36,8 +68,31 @@ export default {
         <div class="text-center">
           <strong class="text-purple-10 active-plan-title">اشتراک فعال من </strong>
         </div>
-        <global_loading_colorful size="90"></global_loading_colorful>
+        <global_loading_colorful v-if="active_plan_loading" size="90"></global_loading_colorful>
+        <template v-else>
+          <template v-if="active_plan">
+            sdfsdf
+          </template>
+          <template v-else>
+            <div class="text-center q-mt-sm no-plan-text">
+              <strong>اشتراکی برای شما فعال نیست <br> برای استفاده کامل از خدمات پرگولا ابتدا اشتراک مورد نظر خود را انتخاب کنید</strong>
+            </div>
+            <div class="text-center q-mt-sm q-mb-xs">
+              <q-icon name="fa-duotone fa-regular fa-down-long fa-bounce" color="teal-8" class="down-icon" style="--fa-animation-duration: 1.2s;"></q-icon>
+            </div>
+          </template>
+        </template>
+
       </div>
+    </q-card-section>
+    <q-card-section>
+      <global_loading_colorful v-if="plans_loading" size="85" text="درحال دریافت لیست اشتراک ها"></global_loading_colorful>
+      <div class="row">
+        <div v-for="plan in plans" class="col-md-6 col-sm-12 col-xs-12 q-px-sm q-mb-md">
+          <plan_single :plan="plan" class="q-mb-md"></plan_single>
+        </div>
+      </div>
+
     </q-card-section>
   </q-card>
 </template>
@@ -52,10 +107,17 @@ export default {
 .active-plan-box{
   padding: 18px 10px;
   border-radius: 7px;
-  background: rgba(179, 188, 196, 0.5);
+  background: rgba(110,21,140,0.09);
 }
 .active-plan-title{
   font-size: 17.5px;
+}
+.no-plan-text{
+  font-size: 14px;
+  line-height: 25px;
+}
+.down-icon{
+  font-size: 35px;
 }
 @media only screen and (max-width: 768px) {
   .title-text{
@@ -64,6 +126,12 @@ export default {
   .active-plan-title{
     font-size: 14.5px;
   }
-
+  .no-plan-text{
+    font-size: 13px;
+    line-height: 22px;
+  }
+  .down-icon{
+    font-size: 26px;
+  }
 }
 </style>

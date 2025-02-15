@@ -14,16 +14,16 @@ export default {
 
   <q-card flat >
     <q-card-section >
-      <div class=" text-center q-mt-sm title-text font-lalezar text-pink-6 animation-fade-in">
-        پرگولا
+      <div class=" text-center">
+        <img class="logo-image" src="assets/images/icons/logo.png" alt="">
       </div>
-      <div class="q-mt-sm text-center subtitle-text text-grey-8">
-        <strong>
+      <div class="text-center subtitle-text">
+        <strong class="text-pink-9">
           پرگولا اولین پلتفرم اختصاصی مو و رنگ مو
         </strong>
       </div>
       <div class="q-mt-lg text-center">
-        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته،
+
       </div>
     </q-card-section>
 
@@ -37,10 +37,15 @@ export default {
 .subtitle-text{
   font-size: 17px;
 }
+.logo-image{
+  width: 340px;
+}
 @media only screen and (max-width: 768px) {
   .title-text{
     font-size: 32px;
   }
-
+  .logo-image{
+    width: 260px;
+  }
 }
 </style>

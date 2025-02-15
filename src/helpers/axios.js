@@ -4,7 +4,7 @@
 import axios from "axios";
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-window.axios.defaults.baseURL="https://api.sogold.org"
+window.axios.defaults.baseURL="https://core.pergola.ir";
 window.axios.interceptors.response.use(
     response => {
 
