@@ -216,6 +216,7 @@ export default {
                 <div class="q-mt-md" v-if="item.answer.oxidant">
                   <strong class="text-teal-7">اکسیدان مورد نیاز به مقدار  : </strong>
                   <strong class="text-red font-15">{{item.answer.oxidant}}</strong>
+                  <strong class="q-ml-sm">درصد</strong>
                 </div>
                 <div class="q-mt-md" v-if="item.answer.text">
                   {{item.answer.text}}
