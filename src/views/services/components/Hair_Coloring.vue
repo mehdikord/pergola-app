@@ -3,6 +3,7 @@ import {Stores_Auth} from "@/stores/auth/auth.js";
 import {Stores_Colors} from "@/stores/colors/colors.js";
 import {Stores_Options} from "@/stores/options/options.js";
 import {Stores_Plans} from "@/stores/plans/plans.js";
+import {Stores_Services} from "@/stores/services/services.js";
 
 export default {
   name: "Hair_Coloring",
@@ -12,6 +13,10 @@ export default {
     this.Get_Options();
     if (Stores_Auth().AuthGetCheckAuth){
       this.User_Plan_Active();
+    }
+    if (localStorage.getItem('pergola_answer')){
+      this.answer = JSON.parse(localStorage.getItem('pergola_answer'));
+      this.loading=false;
     }
   },
   data(){
@@ -29,6 +34,7 @@ export default {
       answer:null,
       dialog_auth:false,
       active_plan: null,
+      errors:[],
     }
   },
   methods:{
@@ -109,24 +115,31 @@ export default {
       if (!this.active_plan){
         return this.dialog_auth = true
       }
-      if (!this.items.second_color || !this.items.first_color){
-        return this.Methods_Notify_Message_Error('موارد خواسته شده را تکمیل کنید')
+      if (this.items.from_color_id === this.items.to_color_id){
+        return this.Methods_Notify_Message_Error("رنگ انتخابی و رنگ فعلی نمیتوانند یکی باشند !")
       }
       this.loading = true;
-      setTimeout(() => {
-        this.answer = 'yes';
+      this.items.items = this.items.items.filter(item => item !== null && item !== undefined);
+      Stores_Services().Coloring_Create(this.items).then(res => {
+        this.answer = res.data.result;
+        localStorage.setItem('pergola_answer',JSON.stringify(this.answer));
         this.loading = false;
-      }, 1500);
+      }).catch(error=>{
+        if (error.response.status === 422) {
+          this.Methods_Validation_Notify();
+          this.errors = error.response.data;
+        }else {
+          this.Methods_Notify_Error_Server();
+        }
+        this.loading=false;
+      })
+
+
 
     },
-    Find_Color(color){
-      let find = null;
-      this.colors.forEach(item => {
-        if(item.value === color){
-          find = item
-        }
-      })
-      return find;
+    Clear_Answer(){
+      localStorage.removeItem('pergola_answer');
+      this.answer=null;
     }
   },
   computed:{
@@ -175,67 +188,47 @@ export default {
         <q-card-section>
           <div class="text-center q-mt-sm">
             <strong class="text-purple answer-title">
-              نتایج محاسبات
+              مراحل انجام کار
             </strong>
           </div>
-          <div class="q-mt-lg text-justify">
-            <div class="answer-text row">
-              برای تغییر رنگ مو خود از
-              <div class="tear-selected q-ml-sm q-mr-sm" :style="'background-color:'+items.first_color"></div>
-              <strong class="q-mr-sm">
-                {{Find_Color(items.first_color).label}}
-              </strong>
-               به رنگ
-              <div class="tear-selected q-ml-sm q-mr-sm" :style="'background-color:'+items.second_color"></div>
-              <strong class="q-mr-sm">
-                {{Find_Color(items.second_color).label}}
-              </strong>
-              باید مراحل زیر را طی کنید :
-            </div>
+          <div class="q-mt-lg text-center">
+            برای تغییر رنگ مو خود از رنگ ( <strong>{{answer.from_color.name}}</strong> )
+            به رنگ ( <strong>{{answer.to_color.name}}</strong> )
+            مراحل گفته شده را با دقت انجام دهید
           </div>
           <div class="q-mt-lg">
 
-            <div class="text-justify answer-message">
-              <q-card bordered>
-                <q-card-section>
-                  <q-btn round size="xs" dense color="purple-5" label="1"  class="answer-number q-mr-xs q-mb-sm"></q-btn>
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه
-                </q-card-section>
-              </q-card>
-            </div>
+            <div v-for="(item,index) in answer.answers" class="info-box q-mb-md">
+              <strong class="text-grey-9"> مرحله : </strong><strong class="text-red-6">{{index + 1}}</strong>
+              <q-separator class="q-mt-sm"/>
+              <div class="q-mt-md">
+                <template v-if="item.answer.colors.length > 0">
+                  <strong class="text-teal-7">تلفیق رنگ های مورد نیاز : </strong>
+                  <div class="q-mt-md row">
+                    <div v-for="color in item.answer.colors" class="col-md-3 col-sm-6 col-xs-6 q-px-sm">
+                      <div class="color-box color-text text-grey-9">
+                        رنگ ( <strong class="text-dark">{{color.name}}</strong> )
+                        به مقدار :  <strong class="text-blue-8 font-15">{{color.val}}</strong>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <div class="q-mt-md" v-if="item.answer.oxidant">
+                  <strong class="text-teal-7">اکسیدان مورد نیاز به مقدار  : </strong>
+                  <strong class="text-red font-15">{{item.answer.oxidant}}</strong>
+                </div>
+                <div class="q-mt-md" v-if="item.answer.text">
+                  {{item.answer.text}}
+                </div>
 
-            <div class="text-justify answer-message q-mt-md">
-              <q-card bordered>
-                <q-card-section>
-                  <q-btn round size="xs" dense color="purple-5" label="2"  class="answer-number q-mr-xs q-mb-sm"></q-btn>
-                  لورم ایپسوم متن ساختگی با تولید سادگی
-                </q-card-section>
-              </q-card>
-            </div>
+              </div>
 
-            <div class="text-justify answer-message q-mt-md">
-              <q-card bordered>
-                <q-card-section>
-                  <q-btn round size="xs" dense color="purple-5" label="3"  class="answer-number q-mr-xs q-mb-sm"></q-btn>
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
-                </q-card-section>
-              </q-card>
-            </div>
-
-            <div class="text-justify answer-message q-mt-md">
-              <q-card bordered>
-                <q-card-section>
-                  <q-btn round size="xs" dense color="purple-5" label="4"  class="answer-number q-mr-xs q-mb-sm"></q-btn>
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.
-                </q-card-section>
-              </q-card>
             </div>
 
           </div>
-
           <div class="q-mt-lg text-center">
             <q-btn class="q-mr-sm" glossy rounded color="pink-7" label="ذخیره در حافظه" icon="fa-duotone fa-light fa-save"></q-btn>
-            <q-btn @click="answer = null" class="q-ml-sm" glossy rounded color="blue-grey-8" label="محاسبه مجدد" icon="fa-duotone fa-regular fa-refresh"></q-btn>
+            <q-btn @click="Clear_Answer" class="q-ml-sm" glossy rounded color="blue-grey-8" label="محاسبه مجدد" icon="fa-duotone fa-regular fa-refresh"></q-btn>
           </div>
 
 
@@ -347,7 +340,7 @@ export default {
                 وارد کردن اطلاعات
               </div>
               <div v-else class="text-center">
-                <strong class="text-green-8">اطلاعات وارد شده </strong> <q-icon name="fa-duotone fa-regular fa-check-circle" size="xs" color="green-8"></q-icon>
+                <strong @click="info_dialog= !info_dialog" class="text-green-8">اطلاعات وارد شده </strong> <q-icon name="fa-duotone fa-regular fa-check-circle" size="xs" color="green-8"></q-icon>
               </div>
             </div>
             <q-dialog
@@ -463,9 +456,9 @@ export default {
   border-radius: 0 50% 50% 50%;
 }
 .info-box{
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  padding: 15px 25px;
+  border-radius: 8px;
+  background-color: rgba(0,0,0,0.05);
+  padding: 15px 10px;
 }
 .submit-btn{
   padding: 10px 50px;
@@ -496,6 +489,11 @@ export default {
 }
 .submit-btn{
   font-size: 14px !important;
+}
+.color-box{
+  padding: 12px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.2);
 }
 @media only screen and (max-width: 768px) {
   .bread-img{
@@ -539,6 +537,9 @@ export default {
     font-size: 14px !important;
   }
   .submit-btn{
+    font-size: 12px !important;
+  }
+  .color-text{
     font-size: 12px !important;
   }
 }
