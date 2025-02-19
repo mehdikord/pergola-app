@@ -66,12 +66,27 @@ export default {
     <q-card-section class="q-pt-xs" v-if="Stores_Auth().AuthGetCheckAuth">
       <div class="active-plan-box animation-fade-in">
         <div class="text-center">
-          <strong class="text-purple-10 active-plan-title">اشتراک فعال من </strong>
+          <strong class="text-grey-7 active-plan-title">اشتراک فعال من </strong>
         </div>
         <global_loading_colorful v-if="active_plan_loading" size="90"></global_loading_colorful>
         <template v-else>
           <template v-if="active_plan">
-            sdfsdf
+            <div class="text-center q-mt-md">
+              <div class="">
+                <strong class="text-indigo font-15">{{active_plan.title}}</strong>
+              </div>
+              <div class="q-mt-xs row q-gutter-sm justify-center">
+                <q-chip color="green-7" size="sm" text-color="white" class="font-13">شروع :
+                {{ this.$filters.date_jalali(active_plan.start_at,'jYYYY/jM/jD') }}
+                </q-chip>
+                <q-chip color="red-8" size="sm" text-color="white" class="font-13">پایان :
+                  {{ this.$filters.date_jalali(active_plan.end_at,'jYYYY/jM/jD') }}
+                </q-chip>
+              </div>
+              <div class="q-mt-md">
+                <strong> <span class="text-red-8">{{active_plan.days}}</span> روز باقی مانده تا پایان اشتراک شما</strong>
+              </div>
+            </div>
           </template>
           <template v-else>
             <div class="text-center q-mt-sm no-plan-text">
@@ -107,7 +122,7 @@ export default {
 .active-plan-box{
   padding: 18px 10px;
   border-radius: 7px;
-  background: rgba(110,21,140,0.09);
+  background: rgba(110,21,140,0.07);
 }
 .active-plan-title{
   font-size: 17.5px;
