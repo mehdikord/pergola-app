@@ -47,6 +47,7 @@ export default {
             value : item.id,
             label : item.name,
             color : item.color,
+            image : item.image,
           });
         })
 
@@ -60,6 +61,8 @@ export default {
             value : item.id,
             label : item.name,
             color : item.color,
+            image : item.image,
+
           });
         })
 
@@ -199,16 +202,18 @@ export default {
           <div class="q-mt-lg">
 
             <div v-for="(item,index) in answer.answers" class="info-box q-mb-md">
-              <strong class="text-grey-9"> مرحله : </strong><strong class="text-red-6">{{index + 1}}</strong>
+              <div class="text-center font-15">
+                <strong class="text-grey-9"> مرحله : </strong><strong class="text-red-6">{{index + 1}}</strong>
+              </div>
               <q-separator class="q-mt-sm"/>
               <div class="q-mt-md">
                 <template v-if="item.answer.colors.length > 0">
                   <strong class="text-teal-7">تلفیق رنگ های مورد نیاز : </strong>
                   <div class="q-mt-md row">
-                    <div v-for="color in item.answer.colors" class="col-md-3 col-sm-6 col-xs-6 q-px-sm">
+                    <div v-for="color in item.answer.colors" class="col-12 q-px-sm q-mb-sm">
                       <div class="color-box color-text text-grey-9">
-                        رنگ ( <strong class="text-dark">{{color.name}}</strong> )
-                        به مقدار :  <strong class="text-blue-8 font-15">{{color.val}}</strong>
+                        <strong class="text-dark font-13">{{color.name }}</strong>
+                        <span class="float-right">مقدار : <strong class="text-red-6 font-15">{{color.val}}</strong></span>
                       </div>
                     </div>
                   </div>
@@ -221,7 +226,6 @@ export default {
                 <div class="q-mt-lg" v-if="item.answer.text">
                   <div v-html="item.answer.text"></div>
                 </div>
-
               </div>
 
             </div>
@@ -260,13 +264,13 @@ export default {
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps">
                   <q-item-section avatar>
-                    <div class="tear" :style="'background-color:'+scope.opt.color"></div>
+                    <q-img v-if="scope.opt.image" :src="scope.opt.image" class="colors-image-select"></q-img>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>
-                  <span>
+                  <strong>
                     {{ scope.opt.label }}
-                  </span>
+                  </strong>
                     </q-item-label>
                   </q-item-section>
                 </q-item>
@@ -274,7 +278,7 @@ export default {
               <template v-slot:selected-item="scope">
                 <q-item v-bind="scope.itemProps">
                   <q-item-section avatar>
-                    <div class="tear-selected" :style="'background-color:'+scope.opt.color"></div>
+                    <q-img v-if="scope.opt.image" :src="scope.opt.image" class="colors-image-select"></q-img>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>
@@ -306,13 +310,13 @@ export default {
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps">
                   <q-item-section avatar>
-                    <div class="tear" :style="'background-color:'+scope.opt.color"></div>
+                    <q-img v-if="scope.opt.image" :src="scope.opt.image" class="colors-image-select"></q-img>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>
-                  <span>
+                  <strong>
                     {{ scope.opt.label }}
-                  </span>
+                  </strong>
                     </q-item-label>
                   </q-item-section>
                 </q-item>
@@ -320,7 +324,7 @@ export default {
               <template v-slot:selected-item="scope">
                 <q-item v-bind="scope.itemProps">
                   <q-item-section avatar>
-                    <div class="tear-selected" :style="'background-color:'+scope.opt.color"></div>
+                    <q-img v-if="scope.opt.image" :src="scope.opt.image" class="colors-image-select"></q-img>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>
@@ -458,7 +462,7 @@ export default {
 }
 .info-box{
   border-radius: 8px;
-  background-color: rgba(0,0,0,0.03);
+  border: 1px dashed rgba(30, 30, 30, 0.4);
   padding: 15px 10px;
 }
 .submit-btn{
