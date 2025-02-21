@@ -2,12 +2,19 @@
 
 import Template_Main_Header from "@/components/Templates/Template_Main_Header.vue";
 import Template_Main_Footer from "@/components/Templates/Template_Main_Footer.vue";
+import ComingSoon from "@/views/ComingSoon.vue";
 
 export default {
   name: "App",
   components :{
     "template_header" : Template_Main_Header,
     "template_footer" : Template_Main_Footer,
+    'coming_soon' : ComingSoon,
+  },
+  data(){
+    return {
+      launching : 1,
+    }
   }
 }
 </script>
@@ -17,25 +24,30 @@ export default {
 
   <q-layout view="lHh Lpr lFf">
     <div class="app-container">
-      <q-header class="header-bg" elevated style=" margin: 0 auto">
-        <template_header></template_header>
-      </q-header>
-      <q-drawer  side="left" behavior="mobile" elevated>
-        <!-- drawer content -->
-      </q-drawer>
-      <q-page-container>
-        <router-view/>
-      </q-page-container>
+      <template v-if="this.$route.name === 'index'">
+        <q-page-container>
+          <coming_soon></coming_soon>
+        </q-page-container>
+      </template>
+      <template v-else>
+        <q-header class="header-bg" elevated style=" margin: 0 auto">
+          <template_header></template_header>
+        </q-header>
+        <q-drawer  side="left" behavior="mobile" elevated>
+          <!-- drawer content -->
+        </q-drawer>
+        <q-page-container>
+          <router-view/>
+        </q-page-container>
+        <q-footer class="footer-style bg-transparent">
+          <template_footer></template_footer>
+        </q-footer>
+      </template>
 
-      <q-footer class="footer-style bg-transparent">
-        <template_footer></template_footer>
-      </q-footer>
 
     </div>
 
   </q-layout>
-
-
 </template>
 <style>
 
