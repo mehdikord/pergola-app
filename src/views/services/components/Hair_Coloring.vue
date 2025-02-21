@@ -218,8 +218,8 @@ export default {
                   <strong class="text-red font-15">{{item.answer.oxidant}}</strong>
                   <strong class="q-ml-sm">درصد</strong>
                 </div>
-                <div class="q-mt-md" v-if="item.answer.text">
-                  {{item.answer.text}}
+                <div class="q-mt-lg" v-if="item.answer.text">
+                  <div v-html="item.answer.text"></div>
                 </div>
 
               </div>
@@ -458,7 +458,7 @@ export default {
 }
 .info-box{
   border-radius: 8px;
-  background-color: rgba(0,0,0,0.05);
+  background-color: rgba(0,0,0,0.03);
   padding: 15px 10px;
 }
 .submit-btn{
