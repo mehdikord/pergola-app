@@ -221,7 +221,16 @@ export default {
                 <div class="q-mt-md" v-if="item.answer.oxidant">
                   <strong class="text-teal-7">اکسیدان مورد نیاز به مقدار  : </strong>
                   <strong class="text-red font-15">{{item.answer.oxidant}}</strong>
+                  <strong class="q-ml-sm">میل</strong>
+                </div>
+                <div class="q-mt-md" v-if="item.answer.oxidant_percent">
+                  <strong class="text-teal-7">درصد اکسیدان : </strong>
+                  <strong class="text-red font-15">{{item.answer.oxidant_percent}}</strong>
                   <strong class="q-ml-sm">درصد</strong>
+                </div>
+                <div class="q-mt-md" v-if="item.answer.oxidant_time">
+                  <strong class="text-teal-7">مدت زمان : </strong>
+                  <strong class="text-red font-15">{{item.answer.oxidant_time}}</strong>
                 </div>
                 <div class="q-mt-lg" v-if="item.answer.text">
                   <div v-html="item.answer.text"></div>
