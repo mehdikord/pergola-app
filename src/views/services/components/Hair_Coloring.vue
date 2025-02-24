@@ -21,7 +21,9 @@ export default {
   },
   data(){
     return {
+      level : 'start_color',
       from_colors:[],
+      from_colors_loading:true,
       to_colors:[],
       options:[],
       items :{
@@ -35,24 +37,37 @@ export default {
       dialog_auth:false,
       active_plan: null,
       errors:[],
+      search : null,
+      search_loading:false,
     }
   },
   methods:{
     Stores_Auth,
     Get_From_Colors(){
-      Stores_Colors().All().then(res => {
-        this.from_colors = [];
-        res.data.result.forEach(item => {
-          this.from_colors.push({
-            value : item.id,
-            label : item.name,
-            color : item.color,
-            image : item.image,
-          });
-        })
-
+      Stores_Colors().Grouping().then(res => {
+        this.from_colors = res.data.result;
+        this.from_colors_loading = false;
       })
     },
+    Search_From_Colors(){
+      if (this.search && this.search.replace(/\s+/g, "").length >= 2) {
+        setTimeout(() => {
+          this.search_loading = true;
+          Stores_Colors().Grouping({name : this.search}).then(res => {
+            this.from_colors = res.data.result;
+            this.search_loading = false;
+          })
+        }, 500);
+      }else {
+        this.search_loading = false;
+
+      }
+    },
+    From_Clear_Search(){
+      this.search = null;
+      this.Get_From_Colors()
+    },
+
     Get_To_Colors(){
       Stores_Colors().All().then(res => {
         this.to_colors = [];
@@ -89,6 +104,53 @@ export default {
         this.Methods_Notify_Error_Server();
       })
     },
+    Change_Level(text,id) {
+      this.$q.dialog({
+        message: 'رنگ انتخابی شما : ' + text +' است ، بریم مرحله بعد ؟',
+        ok: {
+          glossy: true,
+          color : "green-7"
+        },
+        cancel: {
+          glossy: true,
+          color: 'negative'
+        },
+        persistent: true
+      }).onOk(() => {
+        if (this.level === 'start_color') {
+          this.items.from_color_id  = id;
+          this.level = 'end_color';
+          return this.$nextTick(() => {
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+          });
+        }
+        if(this.level === 'end_color') {
+          this.items.to_color_id  = id;
+          this.level = 'info';
+          return this.$nextTick(() => {
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+          });
+        }
+
+      }).onCancel(() => {
+
+      }).onDismiss(() => {
+      })
+    },
+    Back_Level(){
+      if (this.level === 'end_color') {
+        this.level = 'start_color';
+      }
+      if (this.level === 'info') {
+        this.level = 'end_color';
+      }
+    },
     Filter_From_Color_Select (val, update, abort) {
       update(() => {
         if (val){
@@ -124,8 +186,12 @@ export default {
       this.loading = true;
       this.items.items = this.items.items.filter(item => item !== null && item !== undefined);
       Stores_Services().Coloring_Create(this.items).then(res => {
+
         this.answer = res.data.result;
-        localStorage.setItem('pergola_answer',JSON.stringify(this.answer));
+        this.level = 'answer'
+        if (this.answer) {
+          localStorage.setItem('pergola_answer',JSON.stringify(this.answer));
+        }
         this.loading = false;
       }).catch(error=>{
         if (error.response.status === 422) {
@@ -136,14 +202,15 @@ export default {
         }
         this.loading=false;
       })
-
-
-
     },
     Clear_Answer(){
       localStorage.removeItem('pergola_answer');
+      this.Get_From_Colors();
+      this.Get_To_Colors();
+      this.Get_Options();
       this.answer=null;
-    }
+      this.level='start_color';
+    },
   },
   computed:{
     CheckInfo(){
@@ -162,184 +229,95 @@ export default {
 
 <template>
   <q-card flat>
-    <q-card-section >
-      <div class="row">
-        <div class="col-6 row">
-          <img src="assets/images/icons/coloring.png" class="bread-img" alt="">
-          <strong class="bread-title text-pink-8 q-ml-sm q-mt-sm">تغییر رنگ مو</strong>
-        </div>
-        <div class="col-6 text-right">
-          <q-btn :to="{name:'services'}" icon="fa-duotone fa-solid fa-arrow-left-long-to-line" glossy rounded size="sm" color="red-5"></q-btn>
-        </div>
-      </div>
-    </q-card-section>
-    <q-separator/>
-    <template v-if="loading">
-      <q-card-section>
-        <div class="text-center q-mt-md">
-          <q-spinner-dots color="purple" size="90"/>
-          <div class="text-center">
-            <strong class="loading-text text-pink-8">
-              ...  درحال انجام محاسبات ...
-            </strong>
+    <template v-if="!loading">
+      <q-card-section >
+        <div class="text-center animation-fade-in">
+          <img v-if="level === 'start_color'" src="assets/images/icons/colors.svg" class="header-image animation-fade-in" alt="">
+          <img v-if="level === 'end_color'" src="assets/images/icons/hair_color.svg" class="header-image animation-fade-in" alt="">
+          <img v-if="level === 'info'" src="assets/images/icons/info.svg" class="header-image animation-fade-in" alt="">
+          <img v-if="level === 'answer' && answer" src="assets/images/icons/done.svg" class="header-image animation-fade-in" alt="">
+          <div class="header-title font-lalezar">
+            هوش مصنوعی رنگ مو
           </div>
         </div>
       </q-card-section>
-    </template>
-    <template v-else>
-      <template v-if="answer">
-        <q-card-section>
-          <div class="text-center q-mt-sm">
-            <strong class="text-purple answer-title">
-              مراحل انجام کار
-            </strong>
-          </div>
-          <div class="q-mt-lg text-center">
-            برای تغییر رنگ مو خود از رنگ ( <strong>{{answer.from_color.name}}</strong> )
-            به رنگ ( <strong>{{answer.to_color.name}}</strong> )
-            مراحل گفته شده را با دقت انجام دهید
-          </div>
-          <div class="q-mt-lg">
+      <q-card-section class="q-pt-sm">
+        <div class="text-center question-title animation-fade-in">
+          <strong v-if="level === 'start_color'" class="text-deep-purple-8 animation-fade-in">
+            رنگ درحال حاضر موهاتو انتخاب کن
+          </strong>
+          <strong v-if="level === 'end_color'" class="text-deep-purple-8 animation-fade-in">
+            حالا رنگ مورد نظر موهاتو انتخاب کن
+          </strong>
+          <strong v-if="level === 'info'" class="text-deep-purple-8 animation-fade-in">
+            اطلاعات خواسته شده را وارد کنید
+          </strong>
+        </div>
+        <div class="text-center q-mt-md" v-if="level!=='start_color' && level !== 'answer'">
+          <q-btn outline @click="Back_Level" size="sm" color="red-10 font-13" rounded  label="مرحله قبل" icon-right="fa-duotone fa-left"></q-btn>
+        </div>
 
-            <div v-for="(item,index) in answer.answers" class="info-box q-mb-md">
-              <div class="text-center font-15">
-                <strong class="text-grey-9"> مرحله : </strong><strong class="text-red-6">{{index + 1}}</strong>
-              </div>
-              <q-separator class="q-mt-sm"/>
-              <div class="q-mt-md">
-                <template v-if="item.answer.colors.length > 0">
-                  <strong class="text-teal-7">تلفیق رنگ های مورد نیاز : </strong>
-                  <div class="q-mt-md row">
-                    <div v-for="color in item.answer.colors" class="col-12 q-px-sm q-mb-sm">
-                      <div class="color-box color-text text-grey-9">
-                        <strong class="text-dark font-13">{{color.name }}</strong>
-                        <span class="float-right">مقدار : <strong class="text-red-6 font-15">{{color.val}}</strong></span>
+        <template v-if="level === 'start_color' || level === 'end_color' ">
+          <div class="q-mt-lg q-mb-lg text-center animation-fade-in">
+            <q-input   @update:model-value="Search_From_Colors" outlined rounded v-model="search" placeholder="جستجو رنگ ( حداقل ۲ حرف )">
+              <template v-slot:append>
+                <q-btn outline v-if="search" @click="From_Clear_Search" class="font-13" size="sm" color="red" rounded icon="fa-duotone fa-times fa-solid" label="حذف جستجتو"></q-btn>
+                <q-icon v-else name="fa-duotone fa-magnifying-glass fa-solid q-mr-sm fa-bounce" size="29px" color="deep-orange-8" ></q-icon>
+              </template>
+            </q-input>
+          </div>
+          <template v-if="from_colors_loading">
+            <global_loading_colorful size="115" text="درحال دریافت اطلاعات"></global_loading_colorful>
+          </template>
+          <template v-else class="q-mt-md animation-fade-in">
+            <template v-if="search_loading">
+              <global_searching></global_searching>
+            </template>
+            <template v-else>
+              <template v-if="from_colors.length < 1">
+                <global_empty></global_empty>
+              </template>
+              <template v-else>
+                <div v-for="(form_color,index) in from_colors">
+                  <div class="text-center">
+                    <strong class="text-purple-8 font-16">{{index}}</strong>
+                  </div>
+                  <div class="q-mt-md row justify-center">
+                    <div v-for="color in form_color" class="col-sm-3 col-xs-3 q-px-xs q-mb-md">
+                      <div class="color-box text-center cursor-pointer" @click="Change_Level(color.name,color.id)">
+                        <img src="assets/images/icons/default-color.svg" width="55" />
+                        <div>
+                          <strong class="font-13 text-grey-9">{{color.name}}</strong>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </template>
-                <div class="q-mt-md" v-if="item.answer.oxidant">
-                  <strong class="text-teal-7">اکسیدان مورد نیاز به مقدار  : </strong>
-                  <strong class="text-red font-15">{{item.answer.oxidant}}</strong>
-                  <strong class="q-ml-sm">میل</strong>
+                  <q-separator class="q-mt-sm q-mb-sm" />
                 </div>
-                <div class="q-mt-md" v-if="item.answer.oxidant_percent">
-                  <strong class="text-teal-7">درصد اکسیدان : </strong>
-                  <strong class="text-red font-15">{{item.answer.oxidant_percent}}</strong>
-                  <strong class="q-ml-sm">درصد</strong>
-                </div>
-                <div class="q-mt-md" v-if="item.answer.oxidant_time">
-                  <strong class="text-teal-7">مدت زمان : </strong>
-                  <strong class="text-red font-15">{{item.answer.oxidant_time}}</strong>
-                </div>
-                <div class="q-mt-lg" v-if="item.answer.text">
-                  <div v-html="item.answer.text"></div>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-          <div class="q-mt-lg text-center">
-            <q-btn class="q-mr-sm" glossy rounded color="pink-7" label="ذخیره در حافظه" icon="fa-duotone fa-light fa-save"></q-btn>
-            <q-btn @click="Clear_Answer" class="q-ml-sm" glossy rounded color="blue-grey-8" label="محاسبه مجدد" icon="fa-duotone fa-regular fa-refresh"></q-btn>
-          </div>
+              </template>
+            </template>
 
 
-        </q-card-section>
-      </template>
-      <template v-else>
-        <q-card-section>
-          <div class="info q-mt-sm text-justify">
-            لطفا برای محاسبات دقیق و پاسخ درست اطلاعات خواسته شده را با دقت و به درستی وارد کرده و دکمه انجام محاسبات را بزنید .
-          </div>
-        </q-card-section>
-        <q-card-section>
-          <div>
-            <label for="" class="text-pink-7"><strong>انتخاب رنگ مو فعلی</strong></label>
+          </template>
+        </template>
+        <template v-if="level === 'info'">
+          <div v-for="option in options" class="col-md-4 col-xs-12 q-px-sm q-mb-sm">
             <q-select
-                class="q-mt-sm"
+                class="q-mt-lg"
                 outlined
-                :options="from_colors"
+                rounded
+                :label="option.name"
+                :options="option.items"
                 emit-value
                 map-options
-                use-input
-                v-model="items.from_color_id"
-                clearable
-                @filter="Filter_From_Color_Select"
-                color="purple-3"
-                clear-icon="fa-duotone fa-solid fa-times-circle text-red-8 font-22"
-            >
-              <template v-slot:option="scope">
-                <q-item v-bind="scope.itemProps">
-                  <q-item-section avatar>
-                    <q-img v-if="scope.opt.image" :src="scope.opt.image" class="colors-image-select"></q-img>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>
-                  <strong>
-                    {{ scope.opt.label }}
-                  </strong>
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
-              <template v-slot:selected-item="scope">
-                <q-item v-bind="scope.itemProps">
-                  <q-item-section avatar>
-                    <q-img v-if="scope.opt.image" :src="scope.opt.image" class="colors-image-select"></q-img>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>
-                      <strong>
-                        {{ scope.opt.label }}
-                      </strong>
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
-            </q-select>
-          </div>
-          <div class="q-mt-lg">
-            <label for="" class="text-pink-7"><strong>انتخاب رنگ مو جدید</strong></label>
-            <q-select
-                class="q-mt-sm"
-                outlined
-                :options="to_colors"
-                emit-value
-                map-options
-                use-input
-                v-model="items.to_color_id"
                 position="top"
-                clearable
-                @filter="Filter_To_Color_Select"
-                color="purple-3"
-                clear-icon="fa-duotone fa-solid fa-times-circle text-red-8 font-22"
+                v-model="items.items[option.id].value"
             >
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps">
-                  <q-item-section avatar>
-                    <q-img v-if="scope.opt.image" :src="scope.opt.image" class="colors-image-select"></q-img>
-                  </q-item-section>
                   <q-item-section>
                     <q-item-label>
-                  <strong>
-                    {{ scope.opt.label }}
-                  </strong>
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
-              <template v-slot:selected-item="scope">
-                <q-item v-bind="scope.itemProps">
-                  <q-item-section avatar>
-                    <q-img v-if="scope.opt.image" :src="scope.opt.image" class="colors-image-select"></q-img>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>
-                      <strong>
-                        {{ scope.opt.label }}
-                      </strong>
+                      {{ scope.opt.label }}
                     </q-item-label>
                   </q-item-section>
                 </q-item>
@@ -347,101 +325,132 @@ export default {
 
             </q-select>
           </div>
-          <div class="q-mt-lg">
-            <label for="" class="text-pink-7"><strong>اطلاعات مورد نیاز</strong></label>
-            <div class="q-mt-sm info-box cursor-pointer" @click="info_dialog= !info_dialog">
-              <div v-if="!CheckInfo" class="text-center text-grey-10">
-                وارد کردن اطلاعات
-              </div>
-              <div v-else class="text-center">
-                <strong @click="info_dialog= !info_dialog" class="text-green-8">اطلاعات وارد شده </strong> <q-icon name="fa-duotone fa-regular fa-check-circle" size="xs" color="green-8"></q-icon>
-              </div>
+          <div class="text-center q-mt-xl">
+            <q-btn class="submit-btn" @click="Send_Items" label="ثبت اطلاعات و انجام محاسبات" icon="fa-duotone fa-check fa-solid" color="indigo-7" rounded></q-btn>
+          </div>
+        </template>
+
+        <template v-if="level === 'answer'">
+          <div v-if="!answer" class="q-mt-md text-center">
+            <img src="assets/images/icons/sad-bot.svg" width="140" alt="">
+            <div class="q-mt-sm">
+              <strong class="text-red font-15">متاسفانه نتیجه ای برای درخواست شما یافت نشد !</strong>
+               <div class="q-mt-md">
+                 <q-btn @click="Clear_Answer" color="teal" rounded outline class="font-14" style="width: 80%;padding-bottom: 10px;padding-top: 10px" label="تلاش دوباره " icon="fa-duotone fa-arrows-rotate fa-regular"></q-btn>
+               </div>
             </div>
-            <q-dialog
-                v-model="info_dialog"
-                position="top"
-            >
-              <q-card style="width: 90vw;">
-                <q-card-section>
-                  <label for="" class="text-pink-7 font-15"><strong>وارد کردن اطلاعات</strong></label>
-                </q-card-section>
-                <q-separator/>
-                <q-card-section class="q-pt-sm">
-                  <div v-for="option in options" class="col-md-4 col-xs-12 q-px-sm q-mb-sm">
-                    <q-select
-                        class="q-mt-lg"
-                        outlined
-                        :label="option.name"
-                        :options="option.items"
-                        emit-value
-                        map-options
-                        position="top"
-                        v-model="items.items[option.id].value"
-                    >
-                      <template v-slot:option="scope">
-                        <q-item v-bind="scope.itemProps">
-                          <q-item-section>
-                            <q-item-label>
-                              {{ scope.opt.label }}
-                            </q-item-label>
-                          </q-item-section>
-                        </q-item>
-                      </template>
-
-                    </q-select>
-                  </div>
-
-                </q-card-section>
-                <q-card-actions align="left" class="q-mb-sm q-px-md">
-                  <q-btn class="font-14 items-btn" color="pink-5"  rounded glossy label="‌ثبت اطلاعات" v-close-popup />
-                </q-card-actions>
-              </q-card>
-            </q-dialog>
           </div>
-          <div class="q-mt-xl text-center">
-            <q-btn rounded glossy @click="Send_Items" color="purple-7" label="ثبت و محاسبه اطلاعات شما" class="submit-btn"></q-btn>
-          </div>
-          <q-dialog
-              v-model="dialog_auth"
-              position="top"
-          >
-            <q-card style="width: 100%">
-              <q-card-section v-if="Stores_Auth().AuthGetCheckAuth">
-                <div class="text-center q-mt-md">
-                  <img class="bg-image" src="assets/images/background/plan_need.svg" alt="">
-                  <div class="q-mt-sm">
-                    <strong>
-                      برای استفاده از این قابلیت باید اشتراک ویژه داشته باشید !
-                    </strong>
+          <div v-else>
+
+            <div class="text-center q-mt-sm">
+              <strong class="text-purple answer-title">
+                مراحل انجام کار
+              </strong>
+            </div>
+            <div class="q-mt-lg text-center">
+              برای تغییر رنگ مو خود از رنگ ( <strong>{{answer.from_color.name}}</strong> )
+              به رنگ ( <strong>{{answer.to_color.name}}</strong> )
+              مراحل گفته شده را با دقت انجام دهید
+            </div>
+            <div class="q-mt-lg">
+
+              <div v-for="(item,index) in answer.answers" class="info-box q-mb-md">
+                <div class="text-center font-15">
+                  <strong class="text-grey-9"> مرحله : </strong><strong class="text-red-6">{{index + 1}}</strong>
+                </div>
+                <q-separator class="q-mt-sm"/>
+                <div class="q-mt-md">
+                  <template v-if="item.answer.colors.length > 0">
+                    <strong class="text-teal-7">تلفیق رنگ های مورد نیاز : </strong>
+                    <div class="q-mt-md row">
+                      <div v-for="color in item.answer.colors" class="col-12 q-px-sm q-mb-sm">
+                        <div class="color-box color-text text-grey-9">
+                          <strong class="text-dark font-13">{{color.name }}</strong>
+                          <span class="float-right">مقدار : <strong class="text-red-6 font-15">{{color.val}}</strong></span>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                  <div class="q-mt-md" v-if="item.answer.oxidant">
+                    <strong class="text-teal-7">اکسیدان مورد نیاز به مقدار  : </strong>
+                    <strong class="text-red font-15">{{item.answer.oxidant}}</strong>
+                    <strong class="q-ml-sm">میل</strong>
                   </div>
-                  <div class="q-mt-md">
-                    <q-btn :to="{name : 'plans'}" class="auth-btn" color="pink-7" glossy rounded size="sm" label="دریافت اشتراک ویژه"></q-btn>
+                  <div class="q-mt-md" v-if="item.answer.oxidant_percent">
+                    <strong class="text-teal-7">درصد اکسیدان : </strong>
+                    <strong class="text-red font-15">{{item.answer.oxidant_percent}}</strong>
+                    <strong class="q-ml-sm">درصد</strong>
+                  </div>
+                  <div class="q-mt-md" v-if="item.answer.oxidant_time">
+                    <strong class="text-teal-7">مدت زمان : </strong>
+                    <strong class="text-red font-15">{{item.answer.oxidant_time}}</strong>
+                  </div>
+                  <div class="q-mt-lg" v-if="item.answer.text">
+                    <div v-html="item.answer.text"></div>
                   </div>
                 </div>
-              </q-card-section>
-              <q-card-section v-else>
-                <div class="text-center q-mt-md">
-                  <img class="bg-image" src="assets/images/background/login_need.svg" alt="">
-                  <div class="q-mt-sm">
-                    <strong>
-                      برای انجام محاسبات ابتدا باید وار حساب کاربری خود شوید
-                    </strong>
-                  </div>
-                  <div class="q-mt-md">
-                    <q-btn :to="{name : 'auth'}" class="auth-btn" color="pink-7" glossy rounded size="sm" label="ورود / ثبت نام در پرگولا"></q-btn>
-                  </div>
+
+              </div>
+
+            </div>
+            <div class="q-mt-lg text-center">
+              <q-btn class="q-mr-sm" glossy rounded color="pink-7" label="ذخیره در حافظه" icon="fa-duotone fa-light fa-save"></q-btn>
+              <q-btn @click="Clear_Answer" class="q-ml-sm" glossy rounded color="blue-grey-8" label="محاسبه مجدد" icon="fa-duotone fa-regular fa-refresh"></q-btn>
+            </div>
+
+          </div>
+
+
+
+        </template>
+
+        <q-dialog
+            v-model="dialog_auth"
+            position="top"
+        >
+          <q-card style="width: 100%">
+            <q-card-section v-if="Stores_Auth().AuthGetCheckAuth">
+              <div class="text-center q-mt-md">
+                <img class="bg-image" src="assets/images/background/plan_need.svg" alt="">
+                <div class="q-mt-sm">
+                  <strong>
+                    برای استفاده از این قابلیت باید اشتراک ویژه داشته باشید !
+                  </strong>
                 </div>
-              </q-card-section>
-              <q-card-actions align="right" class="q-mb-sm q-px-md q-mt-sm">
-                <q-btn size="sm" class="submit-btn" color="grey-8"  rounded glossy label="بستن" icon="fa-duotone fa-solid fa-times-circle" v-close-popup />
-              </q-card-actions>
+                <div class="q-mt-md">
+                  <q-btn :to="{name : 'plans'}" class="auth-btn" color="pink-7" glossy rounded size="sm" label="دریافت اشتراک ویژه"></q-btn>
+                </div>
+              </div>
+            </q-card-section>
+            <q-card-section v-else>
+              <div class="text-center q-mt-md">
+                <img class="bg-image" src="assets/images/background/login_need.svg" alt="">
+                <div class="q-mt-sm">
+                  <strong>
+                    برای انجام محاسبات ابتدا باید وار حساب کاربری خود شوید
+                  </strong>
+                </div>
+                <div class="q-mt-md">
+                  <q-btn :to="{name : 'auth'}" class="auth-btn" color="pink-7" glossy rounded size="sm" label="ورود / ثبت نام در پرگولا"></q-btn>
+                </div>
+              </div>
+            </q-card-section>
+            <q-card-actions align="right" class="q-mb-sm q-px-md q-mt-sm">
+              <q-btn size="sm" class="submit-btn" color="grey-8"  rounded glossy label="بستن" icon="fa-duotone fa-solid fa-times-circle" v-close-popup />
+            </q-card-actions>
 
-            </q-card>
-          </q-dialog>
+          </q-card>
+        </q-dialog>
 
-        </q-card-section>
-      </template>
+      </q-card-section>
     </template>
+    <template v-else>
+
+      <global_loading_colorful size="115" text="درحا"></global_loading_colorful>
+    </template>
+
+
+
   </q-card>
 
 
@@ -450,111 +459,40 @@ export default {
 </template>
 
 <style scoped>
-.bread-img{
-  width: 48px;
-}
-.bread-title{
-  font-size: 18px;
-}
-.info{
-  font-size: 16px;
-}
-.tear {
-  width: 55px;
-  aspect-ratio:1;
-  border-radius: 0 50% 50% 50%;
-}
-.tear-selected {
-  width: 32px;
-  aspect-ratio:1;
-  border-radius: 0 50% 50% 50%;
-}
-.info-box{
-  border-radius: 8px;
-  border: 1px dashed rgba(30, 30, 30, 0.4);
-  padding: 15px 10px;
-}
-.submit-btn{
-  padding: 10px 50px;
-  font-size: 14.5px;
-  font-weight: bold;
-}
-.loading-text{
-  font-size: 17.5px;
-}
-.answer-title{
-  font-size: 20px;
-}
-.answer-text{
-  font-size: 16px;
-}
-.answer-number{
-  font-size: 13px !important;
-}
-.answer-message{
-  font-size: 15px;
-}
 
-.bg-image{
-  width: 250px !important;
-}
-.auth-btn{
-  font-size: 15px !important;
-}
-.submit-btn{
-  font-size: 14px !important;
-}
-.color-box{
-  padding: 12px 8px;
-  border-radius: 8px;
-  border: 1px solid rgba(0,0,0,0.2);
-}
 @media only screen and (max-width: 768px) {
-  .bread-img{
-    width: 38px;
+
+  .header-image{
+    width: 90px !important;
   }
-  .bread-title{
-    font-size: 15px;
+  .header-title{
+    font-size: 20px !important;
+    font-weight: 50!important;
   }
-  .info{
-    font-size: 14px;
+  .question-title{
+    font-size: 15px !important;
+    font-weight: 500;
   }
-  .tear {
-    width: 40px;
-    aspect-ratio:1;
-    border-radius: 0 50% 50% 50%;
+  .color-box{
+    padding:10px 8px;
+    border-radius: 10px;
+    border: 1px dashed rgba(128, 128, 128, 0.5);
   }
   .submit-btn{
-    padding: 10px 40px;
+    padding: 14px 40px;
     font-size: 14px;
   }
-  .loading-text{
-    font-size: 14px;
+
+  .info-box{
+    border-radius: 8px;
+    border: 1px dashed rgba(30, 30, 30, 0.4);
+    padding: 15px 10px;
   }
   .answer-title{
     font-size: 16px;
   }
-  .answer-text{
-    font-size: 14px;
-  }
-  .answer-number{
-    font-size: 11px !important;
-  }
-  .items-btn{
-    width: 100%;
-    padding: 8px 5px!important;
-  }
-  .bg-image{
-    width: 200px !important;
-  }
-  .auth-btn{
-    font-size: 14px !important;
-  }
-  .submit-btn{
-    font-size: 12px !important;
-  }
-  .color-text{
-    font-size: 12px !important;
-  }
+
 }
+
+
 </style>

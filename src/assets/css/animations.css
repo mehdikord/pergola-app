@@ -10,3 +10,45 @@
         opacity: 1;             /* Ending opacity */
     }
 }
+
+@keyframes searchPulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* For a more complex magnifying glass animation */
+@keyframes searchLoop {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        transform: rotate(15deg) scale(1.1);
+    }
+    50% {
+        transform: rotate(0deg) scale(1.2);
+    }
+    75% {
+        transform: rotate(-15deg) scale(1.1);
+    }
+    100% {
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+/* Apply to your icon */
+.search-icon {
+    animation: searchPulse 2s ease-in-out infinite;
+    /* or use the complex animation: */
+    /* animation: searchLoop 1.5s ease-in-out infinite; */
+    display: inline-block; /* Needed for transform */
+}

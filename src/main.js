@@ -82,8 +82,12 @@ app.config.globalProperties.$filters={
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 import Global_Loadings_Colorful from "@/components/global/loading/Global_Loadings_Colorful.vue";
 import Global_Validations_Errors from "@/components/global/validations/Global_Validations_Errors.vue";
+import Global_Searching from "@/components/global/loading/Global_Searching.vue";
+import Global_Empty from "@/components/global/loading/Global_Empty.vue";
 
 app.component("global_loading_colorful",Global_Loadings_Colorful)
+app.component("global_searching",Global_Searching)
+app.component("global_empty",Global_Empty)
 app.component("global_validations_errors",Global_Validations_Errors)
 
 
