@@ -1,10 +1,6 @@
 <script>
-import { DotLottieVue } from '@lottiefiles/dotlottie-vue'
 export default {
   name: "Global_Searching",
-  components: {
-    DotLottieVue,
-  }
 }
 </script>
 
