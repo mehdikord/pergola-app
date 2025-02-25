@@ -218,7 +218,7 @@ export default {
           </div>
         </div>
         <div class="col-xs-5 col-sm-5">
-          <img src="assets/images/background/think.svg" alt="">
+          <img class="q-mt-md" src="assets/images/background/think.svg" alt="">
         </div>
       </div>
     </q-card-section>
