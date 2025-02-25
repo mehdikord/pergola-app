@@ -212,8 +212,8 @@ export default {
             <div class="q-mt-xs font-13">
               شما میتوانید درخواست رنگ موی دلخواه خود را به تیم پرگولا ارسال کنید
             </div>
-            <div class="q-mt-lg">
-              <q-btn color="indigo-8" style="width: 100%" class="font-13" rounded glossy icon="fa-duotone fa-solid fa-palette" label="ثبت رنگ مو جدید"></q-btn>
+            <div class="q-mt-md">
+              <q-btn color="indigo-8" style="width: 100%;padding-top: 8px;padding-bottom: 8px" class="font-13" rounded glossy icon="fa-duotone fa-solid fa-palette" label="ثبت رنگ مو جدید"></q-btn>
             </div>
           </div>
         </div>
