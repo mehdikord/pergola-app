@@ -128,6 +128,9 @@ export default {
           });
         }
         if(this.level === 'end_color') {
+          if (this.items.from_color_id === id) {
+            return this.Methods_Notify_Message_Error("رنگ جدید و رنگ فعلی نمیتوانند یکی باشند !")
+          }
           this.items.to_color_id  = id;
           this.level = 'info';
           return this.$nextTick(() => {
@@ -283,11 +286,11 @@ export default {
                     <strong class="text-purple-8 font-16">{{index}}</strong>
                   </div>
                   <div class="q-mt-md row justify-center">
-                    <div v-for="color in form_color" class="col-sm-3 col-xs-3 q-px-xs q-mb-md">
+                    <div v-for="color in form_color" class="col-sm-4 col-xs-4 q-px-xs q-mb-md">
                       <div class="color-box text-center cursor-pointer" @click="Change_Level(color.name,color.id)">
-                        <img src="assets/images/icons/default-color.svg" width="55" />
-                        <div>
-                          <strong class="font-13 text-grey-9">{{color.name}}</strong>
+                        <img src="assets/images/icons/default-color.svg" width="62" />
+                        <div class="q-mt-xs">
+                          <strong class="font-14 text-grey-9">{{color.name}}</strong>
                         </div>
                       </div>
                     </div>

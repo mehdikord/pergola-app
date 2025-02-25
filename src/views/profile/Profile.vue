@@ -87,7 +87,7 @@ export default {
 </script>
 
 <template>
-  <q-card class="q-mt-md q-mx-xs " flat style="background-color: rgba(110,21,140,0.09)">
+  <q-card class="q-mt-md q-mx-xs " flat>
     <template v-if="loading">
       <global_loading_colorful class="q-pb-lg" size="90" text="درحال دریافت اطلاعات کاربری"></global_loading_colorful>
     </template>
@@ -109,10 +109,10 @@ export default {
               <span class="text-grey-8">سن : </span>
               <strong class=" text-red-8">{{user.age ?? '---'}}</strong>
             </div>
-            <div class="text-right q-mt-sm">
-              <q-btn @click="dialog_edit=true" class="profile-btn q-mr-xs" size="sm" outline color="blue-8" glossy rounded label="ویرایش" icon="fa-duotone fa-regular fa-edit"></q-btn>
-              <q-btn @click="Logout" class="profile-btn" size="sm" color="red-7" outline glossy rounded label="خروج" icon="fa-duotone fa-regular fa-arrow-left-from-arc"></q-btn>
-            </div>
+          </div>
+          <div class="col-12 q-mt-md">
+            <q-btn @click="dialog_edit=true" class="profile-btn q-mr-xs" glossy color="indigo-6"  label="ویرایش اطلاعات " icon="fa-duotone fa-regular fa-edit"></q-btn>
+            <q-btn @click="Logout" class="profile-btn" color="red-7" glossy   label="خروج از حساب" icon="fa-duotone fa-regular fa-arrow-left-from-arc"></q-btn>
           </div>
         </div>
         <q-dialog
@@ -152,38 +152,77 @@ export default {
             </q-card-actions>
           </q-card>
         </q-dialog>
-
-
-
       </q-card-section>
 
     </template>
   </q-card>
-  <q-card flat class="q-mt-sm">
-    <q-card-section class="q-px-xs">
-      <div class="row justify-center">
-        <div class="col-md-3 col-sm-4 col-xs-4 q-px-xs">
-          <div class="profile-menu-box glossy bg-teal-7">
-            <q-icon name="fa-duotone fa-light fa-stars" color="white" class="icon-size"></q-icon>
-            <strong class="float-right q-mt-xs text-white profile-menu-title">اشتراک ها</strong>
+  <q-separator class="q-mt-sm"/>
+  <q-card flat>
+    <q-card-section class="q-px-sm">
+      <div class="row">
+        <div class="col-sm-4 col-xs-3 q-px-xs text-center">
+          <div class="item-box cursor-pointer" style="border: 1px dashed #0882e3">
+            <q-icon name="fa-duotone fa-bookmark fa-solid" color="blue-7" size="38px"></q-icon>
+            <div class="q-mt-md">
+              <strong class="font-13 text-grey-9">
+                ذخیره شده
+              </strong>
+            </div>
           </div>
         </div>
-        <div class="col-md-3 col-sm-4 col-xs-4 q-px-xs">
-          <div class="profile-menu-box glossy bg-blue-7">
-            <q-icon name="fa-duotone fa-light fa-floppy-disk" color="white" class="icon-size"></q-icon>
-            <strong class="float-right q-mt-xs text-white profile-menu-title">ذخیره شده</strong>
+        <div class="col-sm-4 col-xs-3 q-px-xs text-center">
+          <div class="item-box cursor-pointer" style="border: 1px dashed #d81b60">
+            <q-icon name="fa-duotone fa-stars fa-solid" color="pink-7" size="38px"></q-icon>
+            <div class="q-mt-md">
+              <strong class="font-13 text-grey-9">
+                اشتراک ها
+              </strong>
+            </div>
           </div>
         </div>
-        <div class="col-md-3 col-sm-4 col-xs-4 q-px-xs">
-          <div class="profile-menu-box glossy bg-deep-orange-8">
-            <q-icon name="fa-duotone fa-light fa-money-bill-transfer" color="white" class="icon-size"></q-icon>
-            <strong class="float-right q-mt-xs text-white profile-menu-title">تراکنش ها</strong>
+        <div class="col-sm-4 col-xs-3 q-px-xs text-center">
+          <div class="item-box cursor-pointer" style="border: 1px dashed #512da8">
+            <q-icon name="fa-duotone fa-file-invoice-dollar fa-solid" color="deep-purple-8" size="38px"></q-icon>
+            <div class="q-mt-md">
+              <strong class="font-13 text-grey-9">
+                پرداخت ها
+              </strong>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-xs-3 q-px-xs text-center">
+          <div class="item-box cursor-pointer" style="border: 1px dashed #00796b">
+            <q-icon name="fa-duotone fa-messages-question fa-solid" color="teal-8" size="38px"></q-icon>
+            <div class="q-mt-md">
+              <strong class="font-13 text-grey-9">
+                تیکت ها
+              </strong>
+            </div>
           </div>
         </div>
       </div>
     </q-card-section>
   </q-card>
-
+  <q-card class="q-mt-sm" flat>
+    <q-card-section class="q-px-sm">
+      <div class="row bg-deep-purple-2 rounded-borders">
+        <div class="col-xs-7 col-sm-7">
+          <div class="q-pa-md">
+            <strong class="text-deep-purple-8 font-lalezar font-weight-100 font-22">آیا میدانستید ؟ </strong>
+            <div class="q-mt-xs font-13">
+              شما میتوانید درخواست رنگ موی دلخواه خود را به تیم پرگولا ارسال کنید
+            </div>
+            <div class="q-mt-lg">
+              <q-btn color="indigo-8" style="width: 100%" class="font-13" rounded glossy icon="fa-duotone fa-solid fa-palette" label="ثبت رنگ مو جدید"></q-btn>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-5 col-sm-5">
+          <img src="assets/images/background/think.svg" alt="">
+        </div>
+      </div>
+    </q-card-section>
+  </q-card>
 </template>
 
 <style scoped>
@@ -194,20 +233,10 @@ export default {
   font-size: 16px;
 }
 .profile-btn{
-  font-size: 12px !important;
+  font-size: 13px !important;
 }
 .submit-btn{
   font-size: 13px !important;
-}
-.profile-menu-box{
-  padding: 16px 14px;
-  border-radius: 8px;
-}
-.profile-menu-title{
-  font-size: 16px;
-}
-.icon-size{
-  font-size: 32px !important;
 }
 
 @media only screen and (max-width: 768px) {
@@ -221,20 +250,15 @@ export default {
     font-size: 14px;
   }
   .profile-btn{
-    font-size: 11px !important;
+    font-size: 12px !important;
+    width: 40%;
   }
   .submit-btn{
     font-size: 12px !important;
   }
-  .profile-menu-box{
-    padding: 13px 8px;
-    border-radius: 8px;
-  }
-  .profile-menu-title{
-    font-size: 13px;
-  }
-  .icon-size{
-    font-size: 28px !important;
+  .item-box{
+    padding:8px 5px;
+    border-radius: 6px;
   }
 }
 
