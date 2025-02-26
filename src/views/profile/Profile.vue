@@ -2,11 +2,15 @@
 import { useQuasar} from 'quasar'
 import {Stores_Profile} from "@/stores/profile/profile.js";
 import {Stores_Auth} from "@/stores/auth/auth.js";
+import Profile_Saved from "@/views/profile/components/Profile_Saved.vue";
 
 export default {
   name: "Profile",
   mounted() {
     this.Get_Profile();
+  },
+  components: {
+    'profile_saved' : Profile_Saved,
   },
   data(){
     return {
@@ -161,14 +165,25 @@ export default {
     <q-card-section class="q-px-sm">
       <div class="row">
         <div class="col-sm-4 col-xs-3 q-px-xs text-center">
-          <div class="item-box cursor-pointer" style="border: 1px dashed #0882e3">
-            <q-icon name="fa-duotone fa-bookmark fa-solid" color="blue-7" size="38px"></q-icon>
-            <div class="q-mt-md">
-              <strong class="font-13 text-grey-9">
-                ذخیره شده
-              </strong>
+          <router-link :to="{name: 'profile_saved'}">
+            <div v-if="this.$route.name === 'profile_saved'" class="item-box cursor-pointer" style="border: 1px dashed #0882e3;background-color:#0882e3 ">
+              <q-icon name="fa-duotone fa-bookmark fa-solid" color="white" size="38px"></q-icon>
+              <div class="q-mt-md">
+                <strong class="font-13 text-white">
+                  ذخیره شده
+                </strong>
+              </div>
             </div>
-          </div>
+            <div v-else class="item-box cursor-pointer" style="border: 1px dashed #0882e3">
+              <q-icon name="fa-duotone fa-bookmark fa-solid" color="blue-7" size="38px"></q-icon>
+              <div class="q-mt-md">
+                <strong class="font-13 text-grey-9">
+                  ذخیره شده
+                </strong>
+              </div>
+            </div>
+          </router-link>
+
         </div>
         <div class="col-sm-4 col-xs-3 q-px-xs text-center">
           <div class="item-box cursor-pointer" style="border: 1px dashed #d81b60">
@@ -203,6 +218,7 @@ export default {
       </div>
     </q-card-section>
   </q-card>
+  <profile_saved v-if="this.$route.name === 'profile_saved'"></profile_saved>
   <q-card class="q-mt-sm" flat>
     <q-card-section class="q-px-sm">
       <div class="row bg-deep-purple-2 rounded-borders">
@@ -223,6 +239,7 @@ export default {
       </div>
     </q-card-section>
   </q-card>
+
 </template>
 
 <style scoped>

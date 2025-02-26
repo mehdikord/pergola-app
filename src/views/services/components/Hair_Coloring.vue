@@ -39,6 +39,7 @@ export default {
       errors:[],
       search : null,
       search_loading:false,
+      save_dialog:false,
     }
   },
   methods:{
@@ -211,9 +212,31 @@ export default {
       this.Get_From_Colors();
       this.Get_To_Colors();
       this.Get_Options();
+      this.search=null
       this.answer=null;
       this.level='start_color';
+      return this.$nextTick(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
     },
+    Save_Answer(){
+      let data={
+        'from_color_id' : this.items.from_color_id,
+        'to_color_id' : this.items.to_color_id,
+        'items' : this.items.items,
+        'answers' : this.answer,
+      }
+      Stores_Services().Store_Answer(data).then(res => {
+        this.save_dialog = true;
+        this.Clear_Answer();
+      }).catch(error=>{
+        this.Methods_Notify_Error_Server();
+      })
+    },
+
   },
   computed:{
     CheckInfo(){
@@ -396,15 +419,14 @@ export default {
               </div>
 
             </div>
-            <div class="q-mt-lg text-center">
-              <q-btn class="q-mr-sm" glossy rounded color="pink-7" label="ذخیره در حافظه" icon="fa-duotone fa-light fa-save"></q-btn>
-              <q-btn @click="Clear_Answer" class="q-ml-sm" glossy rounded color="blue-grey-8" label="محاسبه مجدد" icon="fa-duotone fa-regular fa-refresh"></q-btn>
+            <div class="q-mt-lg text-center q-mb-lg">
+
+              <q-btn @click="Save_Answer" class="q-mr-sm font-15" glossy rounded color="purple-9" label="ذخیره در حافظه" icon="fa-duotone fa-light fa-save"></q-btn>
+
+              <q-btn @click="Clear_Answer" class="q-ml-sm font-15" glossy rounded color="teal-8" label="محاسبه مجدد" icon="fa-duotone fa-regular fa-refresh"></q-btn>
             </div>
 
           </div>
-
-
-
         </template>
 
         <q-dialog
@@ -449,16 +471,28 @@ export default {
     </template>
     <template v-else>
 
-      <global_loading_colorful size="115" text="درحا"></global_loading_colorful>
+      <global_loading_colorful size="115" text="درحال انجام محاسبات"></global_loading_colorful>
+
     </template>
-
-
-
   </q-card>
 
+  <q-dialog
+      v-model="save_dialog"
+  >
+    <q-card style="width: 100%">
+      <q-card-section class="q-mt-md">
+        <strong>
+          فرایند مورد نظر در ذخیره شد
+          <br>
+          برای دسترسی به موارد ذخیره شده میتوانید از قسمت پروفایل به قسمت ذخیره شده ها بروید
+        </strong>
+      </q-card-section>
+      <q-card-actions align="right" class="q-mb-sm q-px-md q-mt-sm">
+        <q-btn  class="submit-btn" color="teal-8"  rounded glossy label="متوجه شدم" icon="fa-duotone fa-solid fa-check" v-close-popup />
+      </q-card-actions>
 
-
-
+    </q-card>
+  </q-dialog>
 </template>
 
 <style scoped>

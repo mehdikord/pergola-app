@@ -76,7 +76,15 @@ const router = createRouter({
       meta: {
         title: "حساب کاربری"
       },
-    }
+    },
+    {
+      path: '/profile/saved',
+      component: Profile,
+      name: 'profile_saved',
+      meta: {
+        title: "موارد ذخیره شده"
+      },
+    },
   ],
 })
 // Check Authenticate
