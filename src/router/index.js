@@ -85,6 +85,22 @@ const router = createRouter({
         title: "موارد ذخیره شده"
       },
     },
+    {
+      path: '/profile/invoices',
+      component: Profile,
+      name: 'profile_invoices',
+      meta: {
+        title: "لیست پرداخت ها"
+      },
+    },
+    {
+      path: '/profile/invoices/:id',
+      component: Profile,
+      name: 'profile_invoices_show',
+      meta: {
+        title: "جزئیات پرداخت"
+      },
+    },
   ],
 })
 // Check Authenticate

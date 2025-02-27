@@ -3,6 +3,7 @@ import { useQuasar} from 'quasar'
 import {Stores_Profile} from "@/stores/profile/profile.js";
 import {Stores_Auth} from "@/stores/auth/auth.js";
 import Profile_Saved from "@/views/profile/components/Profile_Saved.vue";
+import Profile_Invoices from "@/views/profile/components/Profile_Invoices.vue";
 
 export default {
   name: "Profile",
@@ -11,6 +12,7 @@ export default {
   },
   components: {
     'profile_saved' : Profile_Saved,
+    'profile_invoices' : Profile_Invoices,
   },
   data(){
     return {
@@ -186,14 +188,24 @@ export default {
 
         </div>
         <div class="col-sm-4 col-xs-3 q-px-xs text-center">
-          <div class="item-box cursor-pointer" style="border: 1px dashed #d81b60">
-            <q-icon name="fa-duotone fa-stars fa-solid" color="pink-7" size="38px"></q-icon>
-            <div class="q-mt-md">
-              <strong class="font-13 text-grey-9">
-                اشتراک ها
-              </strong>
+          <router-link :to="{name: 'profile_invoices'}">
+            <div v-if="this.$route.name === 'profile_invoices' || this.$route.name === 'profile_invoices_show'" class="item-box cursor-pointer" style="border: 1px dashed #d81b60;background-color:#d81b60 ">
+              <q-icon name="fa-duotone fa-stars fa-solid" color="white" size="38px"></q-icon>
+              <div class="q-mt-md">
+                <strong class="font-13 text-white">
+                  اشتراک ها
+                </strong>
+              </div>
             </div>
-          </div>
+            <div v-else class="item-box cursor-pointer" style="border: 1px dashed #d81b60">
+              <q-icon name="fa-duotone fa-stars fa-solid" color="pink-7" size="38px"></q-icon>
+              <div class="q-mt-md">
+                <strong class="font-13 text-grey-9">
+                  اشتراک ها
+                </strong>
+              </div>
+            </div>
+          </router-link>
         </div>
         <div class="col-sm-4 col-xs-3 q-px-xs text-center">
           <div class="item-box cursor-pointer" style="border: 1px dashed #512da8">
@@ -219,6 +231,7 @@ export default {
     </q-card-section>
   </q-card>
   <profile_saved v-if="this.$route.name === 'profile_saved'"></profile_saved>
+  <profile_invoices v-if="this.$route.name === 'profile_invoices' || this.$route.name === 'profile_invoices_show'"></profile_invoices>
   <q-card class="q-mt-sm" flat>
     <q-card-section class="q-px-sm">
       <div class="row bg-deep-purple-2 rounded-borders">
