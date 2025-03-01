@@ -311,7 +311,8 @@ export default {
                   <div class="q-mt-md row justify-center">
                     <div v-for="color in form_color" class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
                       <div class="color-box text-center cursor-pointer" @click="Change_Level(color.name,color.id)">
-                        <img src="assets/images/icons/default-color.svg" width="62" />
+                        <img v-if="color.image" :src="color.image" class="image-color" />
+                        <img v-else src="assets/images/icons/default-color.svg" class="image-color" />
                         <div class="q-mt-xs">
                           <strong class="font-14 text-grey-9">{{color.name}}</strong>
                         </div>
@@ -524,7 +525,10 @@ export default {
 .answer-title{
   font-size: 16px;
 }
-
+.image-color{
+  border-radius: 50%;
+  width: 85px;
+}
 @media only screen and (max-width: 768px) {
 
   .header-image{
@@ -555,7 +559,10 @@ export default {
   .answer-title{
     font-size: 16px;
   }
-
+  .image-color{
+    border-radius: 50%;
+    width: 65px;
+  }
 }
 
 
