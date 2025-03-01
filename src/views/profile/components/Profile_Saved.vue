@@ -189,4 +189,25 @@ export default {
   border-radius: 10px;
   border: 1px dashed rgba(128, 128, 128, 0.5);
 }
+
+@media only screen and (max-width: 768px) {
+  .item-box{
+    padding:12px 8px;
+    border-radius: 7px;
+    border: 1px dashed rgba(102, 103, 103, 0.8);
+  }
+  .info-box{
+    border-radius: 8px;
+    border: 1px dashed rgba(30, 30, 30, 0.4);
+    padding: 15px 10px;
+  }
+
+  .color-box{
+    padding:10px 8px;
+    border-radius: 10px;
+    border: 1px dashed rgba(128, 128, 128, 0.5);
+  }
+}
+
+
 </style>

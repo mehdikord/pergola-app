@@ -30,12 +30,12 @@ export default {
     Stores_Auth,
     User_Plan_Active(){
       Stores_Plans().Active().then(res=> {
-        this.active_plan = res.data.result;
+        if (res.data.result.id){
+          this.active_plan = res.data.result;
+        }
         this.active_plan_loading = false;
       }).catch(error=>{
         this.Methods_Notify_Error_Server();
-
-
       })
 
     },

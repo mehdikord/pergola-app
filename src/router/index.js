@@ -86,6 +86,14 @@ const router = createRouter({
       },
     },
     {
+      path: '/profile/plans',
+      component: Profile,
+      name: 'profile_plans',
+      meta: {
+        title: "اشتراک های من"
+      },
+    },
+    {
       path: '/profile/invoices',
       component: Profile,
       name: 'profile_invoices',

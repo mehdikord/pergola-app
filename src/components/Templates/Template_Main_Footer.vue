@@ -11,7 +11,7 @@ export default {
 
       <div class="col text-center">
         <router-link :to="{name : 'auth'}" title="حساب کاربری">
-          <q-btn class="icon-size" v-if="this.$route.name === 'auth'" round icon="fa-duotone fa-solid fa-user-vneck text-pink-8" color="white"></q-btn>
+          <q-btn class="icon-size" v-if="['auth','profile','profile_saved','profile_invoices','profile_plans','profile_invoices_show'].includes(this.$route.name)" round icon="fa-duotone fa-solid fa-user-vneck text-pink-8" color="white"></q-btn>
           <q-btn class="icon-size" v-else round icon="fa-duotone fa-regular fa-user-vneck text-white" flat color="white"></q-btn>
         </router-link>
       </div>

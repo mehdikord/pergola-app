@@ -4,6 +4,8 @@ import {Stores_Profile} from "@/stores/profile/profile.js";
 import {Stores_Auth} from "@/stores/auth/auth.js";
 import Profile_Saved from "@/views/profile/components/Profile_Saved.vue";
 import Profile_Invoices from "@/views/profile/components/Profile_Invoices.vue";
+import Profile_Invoices_show from "@/views/profile/components/Profile_Invoices_show.vue";
+import Profile_Plans from "@/views/profile/components/Profile_Plans.vue";
 
 export default {
   name: "Profile",
@@ -13,6 +15,8 @@ export default {
   components: {
     'profile_saved' : Profile_Saved,
     'profile_invoices' : Profile_Invoices,
+    'profile_invoices_show' : Profile_Invoices_show,
+    'profile_plans' : Profile_Plans,
   },
   data(){
     return {
@@ -166,7 +170,7 @@ export default {
   <q-card flat>
     <q-card-section class="q-px-sm">
       <div class="row">
-        <div class="col-sm-4 col-xs-3 q-px-xs text-center">
+        <div class="col-sm-4 col-xs-3 col-md-3 col-lg-3 col-xl-3 q-px-xs text-center">
           <router-link :to="{name: 'profile_saved'}">
             <div v-if="this.$route.name === 'profile_saved'" class="item-box cursor-pointer" style="border: 1px dashed #0882e3;background-color:#0882e3 ">
               <q-icon name="fa-duotone fa-bookmark fa-solid" color="white" size="38px"></q-icon>
@@ -187,9 +191,9 @@ export default {
           </router-link>
 
         </div>
-        <div class="col-sm-4 col-xs-3 q-px-xs text-center">
-          <router-link :to="{name: 'profile_invoices'}">
-            <div v-if="this.$route.name === 'profile_invoices' || this.$route.name === 'profile_invoices_show'" class="item-box cursor-pointer" style="border: 1px dashed #d81b60;background-color:#d81b60 ">
+        <div class="col-sm-4 col-xs-3 col-md-3 col-lg-3 col-xl-3 q-px-xs text-center">
+          <router-link :to="{name: 'profile_plans'}">
+            <div v-if="this.$route.name === 'profile_plans'" class="item-box cursor-pointer" style="border: 1px dashed #d81b60;background-color:#d81b60 ">
               <q-icon name="fa-duotone fa-stars fa-solid" color="white" size="38px"></q-icon>
               <div class="q-mt-md">
                 <strong class="font-13 text-white">
@@ -207,8 +211,17 @@ export default {
             </div>
           </router-link>
         </div>
-        <div class="col-sm-4 col-xs-3 q-px-xs text-center">
-          <div class="item-box cursor-pointer" style="border: 1px dashed #512da8">
+        <div class="col-sm-4 col-xs-3 col-md-3 col-lg-3 col-xl-3 q-px-xs text-center">
+          <router-link :to="{name: 'profile_invoices'}">
+          <div v-if="['profile_invoices','profile_invoices_show'].includes(this.$route.name)" class="item-box cursor-pointer" style="border: 1px dashed #512da8;background-color: #512da8">
+            <q-icon name="fa-duotone fa-file-invoice-dollar fa-solid" color="white" size="38px"></q-icon>
+            <div class="q-mt-md">
+              <strong class="font-13 text-white">
+                پرداخت ها
+              </strong>
+            </div>
+          </div>
+          <div v-else class="item-box cursor-pointer" style="border: 1px dashed #512da8">
             <q-icon name="fa-duotone fa-file-invoice-dollar fa-solid" color="deep-purple-8" size="38px"></q-icon>
             <div class="q-mt-md">
               <strong class="font-13 text-grey-9">
@@ -216,8 +229,9 @@ export default {
               </strong>
             </div>
           </div>
+          </router-link>
         </div>
-        <div class="col-sm-4 col-xs-3 q-px-xs text-center">
+        <div class="col-sm-4 col-xs-3 col-md-3 col-lg-3 col-xl-3 q-px-xs text-center">
           <div class="item-box cursor-pointer" style="border: 1px dashed #00796b">
             <q-icon name="fa-duotone fa-messages-question fa-solid" color="teal-8" size="38px"></q-icon>
             <div class="q-mt-md">
@@ -231,23 +245,29 @@ export default {
     </q-card-section>
   </q-card>
   <profile_saved v-if="this.$route.name === 'profile_saved'"></profile_saved>
-  <profile_invoices v-if="this.$route.name === 'profile_invoices' || this.$route.name === 'profile_invoices_show'"></profile_invoices>
+  <profile_invoices_show v-if="this.$route.name === 'profile_invoices_show'"></profile_invoices_show>
+  <profile_invoices v-if="this.$route.name === 'profile_invoices'"></profile_invoices>
+  <profile_plans v-if="this.$route.name === 'profile_plans'"></profile_plans>
+
   <q-card class="q-mt-sm" flat>
     <q-card-section class="q-px-sm">
       <div class="row bg-deep-purple-2 rounded-borders">
         <div class="col-xs-7 col-sm-7">
           <div class="q-pa-md">
-            <strong class="text-deep-purple-8 font-lalezar font-weight-100 font-22">آیا میدانستید ؟ </strong>
             <div class="q-mt-xs font-13">
-              شما میتوانید درخواست رنگ موی دلخواه خود را به تیم پرگولا ارسال کنید
+              <strong class="text-deep-purple-8 font-lalezar font-weight-100 question-title">آیا میدانستید ؟ </strong>
+              <br>
+              <div class="question-sub">
+                شما میتوانید درخواست رنگ موی دلخواه خود را به تیم پرگولا ارسال کنید
+              </div>
             </div>
             <div class="q-mt-md">
               <q-btn color="indigo-8" style="width: 100%;padding-top: 8px;padding-bottom: 8px" class="font-13" rounded glossy icon="fa-duotone fa-solid fa-palette" label="ثبت رنگ مو جدید"></q-btn>
             </div>
           </div>
         </div>
-        <div class="col-xs-5 col-sm-5">
-          <img class="q-mt-md" src="assets/images/background/think.svg" alt="">
+        <div class="col-xs-5 col-sm-5 text-center">
+          <img class="q-mt-md think-image" src="assets/images/background/think.svg" alt="">
         </div>
       </div>
     </q-card-section>
@@ -268,7 +288,21 @@ export default {
 .submit-btn{
   font-size: 13px !important;
 }
-
+.item-box{
+  padding:8px 5px;
+  border-radius: 6px;
+}
+.think-image{
+  width:260px;
+}
+.question-title{
+  font-size: 33px;
+}
+.question-sub{
+  margin-top: 20px;
+  margin-bottom: 50px;
+  font-size: 16px;
+}
 @media only screen and (max-width: 768px) {
   .profile-image {
     width: 75px;
@@ -289,6 +323,17 @@ export default {
   .item-box{
     padding:8px 5px;
     border-radius: 6px;
+  }
+  .think-image{
+    width:100%;
+  }
+  .question-title{
+    font-size: 22px;
+  }
+  .question-sub{
+    margin-top: 10px;
+    margin-bottom: 1px;
+    font-size: 13px;
   }
 }
 

@@ -309,7 +309,7 @@ export default {
                     <strong class="text-purple-8 font-16">{{index}}</strong>
                   </div>
                   <div class="q-mt-md row justify-center">
-                    <div v-for="color in form_color" class="col-sm-4 col-xs-4 q-px-xs q-mb-md">
+                    <div v-for="color in form_color" class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
                       <div class="color-box text-center cursor-pointer" @click="Change_Level(color.name,color.id)">
                         <img src="assets/images/icons/default-color.svg" width="62" />
                         <div class="q-mt-xs">
@@ -496,6 +496,34 @@ export default {
 </template>
 
 <style scoped>
+.header-image{
+  width: 110px !important;
+}
+.header-title{
+  font-size: 26px !important;
+  font-weight: 50!important;
+}
+.question-title{
+  font-size: 16px !important;
+  font-weight: 500;
+}
+.color-box{
+  padding:10px 8px;
+  border-radius: 10px;
+  border: 1px dashed rgba(128, 128, 128, 0.5);
+}
+.submit-btn{
+  padding: 14px 40px;
+  font-size: 14px;
+}
+.info-box{
+  border-radius: 8px;
+  border: 1px dashed rgba(30, 30, 30, 0.4);
+  padding: 15px 10px;
+}
+.answer-title{
+  font-size: 16px;
+}
 
 @media only screen and (max-width: 768px) {
 
@@ -519,7 +547,6 @@ export default {
     padding: 14px 40px;
     font-size: 14px;
   }
-
   .info-box{
     border-radius: 8px;
     border: 1px dashed rgba(30, 30, 30, 0.4);

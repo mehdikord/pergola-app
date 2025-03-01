@@ -47,108 +47,52 @@ export default {
   <q-card flat>
     <q-card-section class="animation-fade-in q-px-xs">
       <q-separator class="q-mb-md"/>
-      <template v-if="this.$route.name === 'profile_invoices'">
-        <div class="text-center">
-          <strong class="text-red font-15">لیست پرداخت ها</strong>
-        </div>
-        <div class="q-mt-md">
-          <global_loading_colorful v-if="loading" size="75" text="درحا دریافت اطلاعات"></global_loading_colorful>
-          <template v-else>
-            <div class="row">
-              <div v-for="item in items" class="col-xs-12 col-sm-12 q-px-sm q-mb-lg">
-                <div class="item-box">
-                  <div>
-                    <span>مبلغ : </span>
-                    <strong class="float-right text-teal-7">{{this.$filters.number_format(item.amount)}} <span class="text-grey-8 font-12">تومان</span></strong>
-                  </div>
-                  <q-separator class="q-mt-sm q-mb-sm"/>
-                  <div>
-                    <span>وضعیت پرداخت : </span>
-                    <template v-if="item.is_paid">
-                      <strong class="float-right text-green-6 font-13"><q-icon name="fa-duotone fa-regular fa-check" color="green-8" size="18px"></q-icon> پرداخت شده </strong>
-                    </template>
-                    <template v-else>
-                      <strong class="float-right text-red-6 font-13"><q-icon name="fa-duotone fa-regular fa-times" color="red-8" size="18px"></q-icon> پرداخت نشده </strong>
-                    </template>
-
-                  </div>
-                  <q-separator class="q-mt-sm q-mb-sm"/>
-                  <div>
-                    <span>تاریخ ثبت : </span>
-                    <strong class="float-right text-dark font-13">{{this.$filters.date_jalali(item.created_at,'jYYYY/jM/jD')}}</strong>
-                  </div>
-                  <template v-if="item.paid_at">
-                    <q-separator class="q-mt-sm q-mb-sm"/>
-                    <div>
-                      <span>تاریخ پرداخت : </span>
-                      <strong class="float-right text-dark font-13">{{this.$filters.date_jalali(item.paid_at,'jYYYY/jM/jD')}}</strong>
-                    </div>
-                  </template>
-                  <div class="q-mt-sm text-center">
-                    <router-link :to="{name : 'profile_invoices_show',params : {id : item.id}}">
-                      <strong class="text-blue-8">جزئیات کامل</strong>
-                    </router-link>
-                  </div>
+      <div class="text-center">
+        <strong class="text-red font-15">لیست پرداخت ها</strong>
+      </div>
+      <div class="q-mt-md">
+        <global_loading_colorful v-if="loading" size="75" text="درحا دریافت اطلاعات"></global_loading_colorful>
+        <template v-else>
+          <div class="row">
+            <div v-for="item in items" class="col-xs-12 col-sm-12 q-px-sm q-mb-lg">
+              <div class="item-box">
+                <div>
+                  <span>مبلغ : </span>
+                  <strong class="float-right text-teal-7">{{this.$filters.number_format(item.amount)}} <span class="text-grey-8 font-12">تومان</span></strong>
                 </div>
-              </div>
-            </div>
-          </template>
-        </div>
-      </template>
-      <template v-if="this.$route.name === 'profile_invoices_show'">
-        <div class="">
-          <strong class="text-red font-14">مشاهده جزئیات پرداخت</strong>
-          <router-link :to="{name : 'profile_invoices'}">
-            <strong class="text-blue-8 float-right font-14">
-              بازگشت
-              <q-icon name="fa-duotone fa-left fa-regular" size="18px"></q-icon>
-            </strong>
-          </router-link>
-        </div>
-        <div class="q-mt-md">
-          <global_loading_colorful v-if="loading" size="75" text="درحا دریافت اطلاعات"></global_loading_colorful>
-          <template v-else>
-            <div class="q-mt-lg q-px-sm">
-              <div>
-                <span>ID : </span>
-                <strong class="float-right" dir="ltr"># {{item.id}}</strong>
-              </div>
-              <q-separator class="q-mt-md q-mb-md"/>
-              <div>
-                <span>مبلغ پرداختی : </span>
-                <strong class="float-right text-teal-7">{{this.$filters.number_format(item.amount)}} <span class="text-grey-8 font-12">تومان</span></strong>
-              </div>
-              <q-separator class="q-mt-md q-mb-md"/>
-              <div>
-                <span>وضعیت پرداخت : </span>
-                <template v-if="item.is_paid">
-                  <strong class="float-right text-green-6 font-13"><q-icon name="fa-duotone fa-regular fa-check" color="green-8" size="18px"></q-icon> پرداخت شده </strong>
-                </template>
-                <template v-else>
-                  <strong class="float-right text-red-6 font-13"><q-icon name="fa-duotone fa-regular fa-times" color="red-8" size="18px"></q-icon> پرداخت نشده </strong>
-                </template>
-
-              </div>
-              <q-separator class="q-mt-md q-mb-md"/>
-              <div>
-                <span>تاریخ ثبت : </span>
-                <strong class="float-right text-dark font-13">{{this.$filters.date_jalali(item.created_at,'jYYYY/jM/jD')}}</strong>
-              </div>
-              <template v-if="item.paid_at">
                 <q-separator class="q-mt-sm q-mb-sm"/>
                 <div>
-                  <span>تاریخ پرداخت : </span>
-                  <strong class="float-right text-dark font-13">{{this.$filters.date_jalali(item.paid_at,'jYYYY/jM/jD')}}</strong>
+                  <span>وضعیت پرداخت : </span>
+                  <template v-if="item.is_paid">
+                    <strong class="float-right text-green-6 font-13"><q-icon name="fa-duotone fa-regular fa-check" color="green-8" size="18px"></q-icon> پرداخت شده </strong>
+                  </template>
+                  <template v-else>
+                    <strong class="float-right text-red-6 font-13"><q-icon name="fa-duotone fa-regular fa-times" color="red-8" size="18px"></q-icon> پرداخت نشده </strong>
+                  </template>
+
                 </div>
-              </template>
-
+                <q-separator class="q-mt-sm q-mb-sm"/>
+                <div>
+                  <span>تاریخ ثبت : </span>
+                  <strong class="float-right text-dark font-13">{{this.$filters.date_jalali(item.created_at,'jYYYY/jM/jD')}}</strong>
+                </div>
+                <template v-if="item.paid_at">
+                  <q-separator class="q-mt-sm q-mb-sm"/>
+                  <div>
+                    <span>تاریخ پرداخت : </span>
+                    <strong class="float-right text-dark font-13">{{this.$filters.date_jalali(item.paid_at,'jYYYY/jM/jD')}}</strong>
+                  </div>
+                </template>
+                <div class="q-mt-sm text-center">
+                  <router-link :to="{name : 'profile_invoices_show',params : {id : item.id}}">
+                    <strong class="text-blue-8">جزئیات کامل</strong>
+                  </router-link>
+                </div>
+              </div>
             </div>
-          </template>
-        </div>
-
-
-      </template>
-
+          </div>
+        </template>
+      </div>
 
     </q-card-section>
   </q-card>

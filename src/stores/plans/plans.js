@@ -10,6 +10,15 @@ export const Stores_Plans = defineStore('plans',{
                 })
             })
         },
+        Own(){
+            return new Promise((resolve, reject) => {
+                axios.get('users/plans/own').then(response =>{
+                    return resolve(response);
+                }).catch(error =>{
+                    return reject(error);
+                })
+            })
+        },
         All(){
             return new Promise((resolve, reject) => {
                 axios.get('users/plans/all').then(response =>{
