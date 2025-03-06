@@ -9,6 +9,8 @@ import Profile from "@/views/profile/Profile.vue";
 
 import {Stores_Auth} from "@/stores/auth/auth.js";
 import Plans from "@/views/plans/Plans.vue";
+import Posts from "@/views/posts/Posts.vue";
+import Posts_Show from "@/views/posts/Posts_Show.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -67,6 +69,22 @@ const router = createRouter({
       name : 'services_coloring',
       meta : {
         title : "خدمات ( تغییر رنگ مو )"
+      },
+    },
+    {
+      path : '/posts',
+      component : Posts,
+      name : 'posts',
+      meta : {
+        title : "نوسته ها"
+      },
+    },
+    {
+      path : '/posts/:slug',
+      component : Posts_Show,
+      name : 'posts_show',
+      meta : {
+        title : "مشاهده نوشته"
       },
     },
     {

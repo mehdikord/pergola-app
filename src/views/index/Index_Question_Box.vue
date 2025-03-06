@@ -6,7 +6,6 @@ export default {
 
 <template>
   <div class="text-center q-mt-md">
-    <q-icon name="fa-duotone fa-solid fa-location-question" class="question-icon" color="indigo-10"></q-icon>
   </div>
 </template>
 
