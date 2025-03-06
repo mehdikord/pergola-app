@@ -563,12 +563,12 @@ export default {
     width: 90px !important;
   }
   .header-title{
-    font-size: 20px !important;
+    font-size: 22px !important;
     font-weight: 50!important;
   }
   .question-title{
-    font-size: 15px !important;
-    font-weight: 500;
+    font-size: 17px !important;
+    font-weight: 600;
   }
   .color-box{
     padding:10px 8px;
