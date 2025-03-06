@@ -287,14 +287,25 @@ export default {
                 <global_empty></global_empty>
               </template>
               <template v-else>
-                <div v-for="(form_color,index) in from_colors">
-                  <div class="text-center">
-                    <strong class="text-purple-8 font-16">{{index}}</strong>
-                  </div>
+                <template v-if="level==='start_color'">
                   <div class="q-mt-md row justify-center">
-                    <div v-for="color in form_color" class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
-
-
+                    <div class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
+                      <div class="color-box text-center cursor-pointer" @click="Change_Level(17)">
+                        <img  src="https://core.pergola.ir/storage/attachments/colors/images/PDaFpc63rtC9qip6z2g4ix1SbDXAC9rrgKleDWV6.jpg" class="image-color" />
+                        <div class="q-mt-xs">
+                          <strong class="font-14 text-grey-9">مشکی طبیعی</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <template v-if="level === 'end_color'">
+                  <div v-for="(form_color,index) in from_colors">
+                    <div class="text-center">
+                      <strong class="text-purple-8 font-16">{{index}}</strong>
+                    </div>
+                    <div class="q-mt-md row justify-center">
+                      <div v-for="color in form_color" class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
 
                         <template v-if="color.is_active">
                           <div class="color-box text-center cursor-pointer" @click="Change_Level(color.name,color.id)">
@@ -316,10 +327,13 @@ export default {
                           </div>
                         </template>
 
+                      </div>
                     </div>
+                    <q-separator class="q-mt-sm q-mb-sm" />
                   </div>
-                  <q-separator class="q-mt-sm q-mb-sm" />
-                </div>
+
+                </template>
+
               </template>
             </template>
 
