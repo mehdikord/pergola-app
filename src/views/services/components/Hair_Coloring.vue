@@ -311,11 +311,22 @@ export default {
                   <div class="q-mt-md row justify-center">
                     <div v-for="color in form_color" class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
                       <div class="color-box text-center cursor-pointer" @click="Change_Level(color.name,color.id)">
-                        <img v-if="color.image" :src="color.image" class="image-color" />
-                        <img v-else src="assets/images/icons/default-color.svg" class="image-color" />
-                        <div class="q-mt-xs">
-                          <strong class="font-14 text-grey-9">{{color.name}}</strong>
-                        </div>
+                        <template v-if="color.is_active">
+                          <img v-if="color.image" :src="color.image" class="image-color" />
+                          <img v-else src="assets/images/icons/default-color.svg" class="image-color" />
+                          <div class="q-mt-xs">
+                            <strong class="font-14 text-grey-9">{{color.name}}</strong>
+                          </div>
+                        </template>
+                        <template v-else>
+                          <img v-if="color.image" :src="color.image" class="image-color inactive-image" />
+                          <img v-else src="assets/images/icons/default-color.svg" class="image-color inactive-image" />
+                          <div class="q-mt-xs">
+                            <q-icon name="fa-duotone fa-solid fa-lock" class="q-mr-xs" color="red-8" size="14px"></q-icon>
+                            <strong class="font-14 text-grey-7">{{color.name}}</strong>
+                          </div>
+                        </template>
+
                       </div>
                     </div>
                   </div>
@@ -497,6 +508,20 @@ export default {
 </template>
 
 <style scoped>
+.inactive-image {
+  filter: grayscale(100%);
+  opacity: 0.6; /* اختیاری - کاهش شفافیت */
+  cursor: not-allowed; /* اختیاری - نشانگر غیرفعال */
+
+  /* پشتیبانی از مرورگرهای قدیمی */
+  -webkit-filter: grayscale(100%);
+}
+
+/* حالت hover (اختیاری) */
+.inactive-image:hover {
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
 .header-image{
   width: 110px !important;
 }

@@ -65,9 +65,9 @@ export default {
   <q-card flat>
     <q-card-section class="animation-fade-in q-px-xs">
       <q-separator class="q-mb-md" />
-      <div class="text-center">
+      <div class="text-center q-mb-md">
         <strong class="text-red font-15">موارد ذخیره شده</strong>
-        <div v-if="!show" class="text-center q-mt-xs font-12 text-grey-9">
+        <div v-if="!show" class="text-center q-mt-xs font-13 text-grey-9">
           برای مشاهده مراحل هر قسمت روی کلیک کنید
         </div>
       </div>
@@ -79,14 +79,16 @@ export default {
               <div class="item-box row cursor-pointer">
                 <div @click="Select_Items(item)" class="col-11 row q-gutter-sm">
                   <div class="row">
-                    <img src="assets/images/icons/default-color.svg" width="40" />
+                    <img v-if="item.from_color.image" src="assets/images/icons/default-color.svg" class="image-color"  />
+                    <img v-else src="assets/images/icons/default-color.svg" class="image-color"  />
                     <strong class="q-mt-sm q-ml-sm font-13">{{item.from_color.name}}</strong>
                   </div>
                   <div class="row">
                     <q-icon class="q-mt-sm q-ml-sm q-mr-sm" name="fa-duotone fa-left-long fa-light" size="22px" color="teal-9"></q-icon>
                   </div>
                   <div class="row">
-                    <img src="assets/images/icons/default-color.svg" width="40" />
+                    <img v-if="item.to_color.image" src="assets/images/icons/default-color.svg" class="image-color"  />
+                    <img v-else src="assets/images/icons/default-color.svg" class="image-color"  />
                     <strong class="q-mt-sm q-ml-sm font-13">{{item.to_color.name}}</strong>
                   </div>
                 </div>
@@ -100,14 +102,16 @@ export default {
            <div class="row">
              <div class="col-10 row q-gutter-sm">
                <div class="row">
-                 <img src="assets/images/icons/default-color.svg" width="35" />
+                 <img v-if="show.from_color.image" src="assets/images/icons/default-color.svg" class="image-color"  />
+                 <img v-else src="assets/images/icons/default-color.svg" class="image-color"  />
                  <strong class="q-mt-sm q-ml-sm font-13">{{show.from_color.name}}</strong>
                </div>
                <div class="row">
                  <q-icon class="q-mt-sm q-ml-sm q-mr-sm" name="fa-duotone fa-left-long fa-light" size="20px" color="teal-9"></q-icon>
                </div>
                <div class="row">
-                 <img src="assets/images/icons/default-color.svg" width="35" />
+                 <img v-if="show.to_color.image" src="assets/images/icons/default-color.svg" class="image-color"  />
+                 <img v-else src="assets/images/icons/default-color.svg" class="image-color"  />
                  <strong class="q-mt-sm q-ml-sm font-13">{{show.to_color.name}}</strong>
                </div>
              </div>
@@ -189,7 +193,10 @@ export default {
   border-radius: 10px;
   border: 1px dashed rgba(128, 128, 128, 0.5);
 }
-
+.image-color{
+  border-radius: 50%;
+  width: 50px;
+}
 @media only screen and (max-width: 768px) {
   .item-box{
     padding:12px 8px;
@@ -206,6 +213,10 @@ export default {
     padding:10px 8px;
     border-radius: 10px;
     border: 1px dashed rgba(128, 128, 128, 0.5);
+  }
+  .image-color{
+    border-radius: 50%;
+    width: 45px;
   }
 }
 
