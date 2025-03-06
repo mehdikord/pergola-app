@@ -38,21 +38,25 @@ export default {
           <div class="contact-item-box bg-purple-1">
             <q-icon class="icon-size" name="fa-duotone fa-regular fa-phone-flip" color="pink-6"></q-icon>
             <strong class="q-ml-sm text-grey-9 contact-title">شماره تماس : </strong>
-            <strong dir="ltr" class="float-right q-mt-xs text-pink-9 contact-info">017 322 5458</strong>
+            <strong dir="ltr" class="float-right q-mt-xs text-pink-9 contact-info">0912 869 7954</strong>
           </div>
         </div>
         <div class="col-sm-12 col-xs-12 col-md-6 q-pa-sm">
           <div class="contact-item-box bg-purple-1">
             <q-icon class="icon-size" name="fa-brands fa-instagram" color="pink-6"></q-icon>
             <strong class="q-ml-sm text-grey-9 contact-title">اینستاگرام : </strong>
-            <strong dir="ltr" class="float-right q-mt-xs text-pink-9 contact-info">@pergola</strong>
+            <strong dir="ltr" class="float-right q-mt-xs text-pink-9 contact-info">
+              <a href="https://instagram.com/sari.hair" target="_blank" class="text-pink-9">@sari.hair</a>
+            </strong>
           </div>
         </div>
         <div class="col-sm-12 col-xs-12 col-md-6 q-pa-sm">
           <div class="contact-item-box bg-purple-1">
             <q-icon class="icon-size" name="fa-brands  fa-telegram" color="pink-6"></q-icon>
             <strong class="q-ml-sm text-grey-9 contact-title">تلگرام : </strong>
-            <strong dir="ltr" class="float-right q-mt-xs text-pink-9 contact-info">@pergola_tel</strong>
+            <strong dir="ltr" class="float-right q-mt-xs text-pink-9 contact-info">
+              <a href="https://telegram.me/Academyjalaly" target="_blank" class="text-pink-9">@Academyjalaly</a>
+            </strong>
           </div>
         </div>
       </div>
