@@ -106,46 +106,29 @@ export default {
       })
     },
     Change_Level(text,id) {
-      this.$q.dialog({
-        message: 'رنگ انتخابی شما : ' + text +' است ، بریم مرحله بعد ؟',
-        ok: {
-          glossy: true,
-          color : "green-7"
-        },
-        cancel: {
-          glossy: true,
-          color: 'negative'
-        },
-        persistent: true
-      }).onOk(() => {
-        if (this.level === 'start_color') {
-          this.items.from_color_id  = id;
-          this.level = 'end_color';
-          return this.$nextTick(() => {
-            window.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            });
+      if (this.level === 'start_color') {
+        this.items.from_color_id  = id;
+        this.level = 'end_color';
+        return this.$nextTick(() => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
           });
+        });
+      }
+      if(this.level === 'end_color') {
+        if (this.items.from_color_id === id) {
+          return this.Methods_Notify_Message_Error("رنگ جدید و رنگ فعلی نمیتوانند یکی باشند !")
         }
-        if(this.level === 'end_color') {
-          if (this.items.from_color_id === id) {
-            return this.Methods_Notify_Message_Error("رنگ جدید و رنگ فعلی نمیتوانند یکی باشند !")
-          }
-          this.items.to_color_id  = id;
-          this.level = 'info';
-          return this.$nextTick(() => {
-            window.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            });
+        this.items.to_color_id  = id;
+        this.level = 'info';
+        return this.$nextTick(() => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
           });
-        }
-
-      }).onCancel(() => {
-
-      }).onDismiss(() => {
-      })
+        });
+      }
     },
     Back_Level(){
       if (this.level === 'end_color') {
@@ -310,24 +293,29 @@ export default {
                   </div>
                   <div class="q-mt-md row justify-center">
                     <div v-for="color in form_color" class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
-                      <div class="color-box text-center cursor-pointer" @click="Change_Level(color.name,color.id)">
+
+
+
                         <template v-if="color.is_active">
-                          <img v-if="color.image" :src="color.image" class="image-color" />
-                          <img v-else src="assets/images/icons/default-color.svg" class="image-color" />
-                          <div class="q-mt-xs">
-                            <strong class="font-14 text-grey-9">{{color.name}}</strong>
+                          <div class="color-box text-center cursor-pointer" @click="Change_Level(color.name,color.id)">
+                            <img v-if="color.image" :src="color.image" class="image-color" />
+                            <img v-else src="assets/images/icons/default-color.svg" class="image-color" />
+                            <div class="q-mt-xs">
+                              <strong class="font-14 text-grey-9">{{color.name}}</strong>
+                            </div>
                           </div>
                         </template>
                         <template v-else>
-                          <img v-if="color.image" :src="color.image" class="image-color inactive-image" />
-                          <img v-else src="assets/images/icons/default-color.svg" class="image-color inactive-image" />
-                          <div class="q-mt-xs">
-                            <q-icon name="fa-duotone fa-solid fa-lock" class="q-mr-xs" color="red-8" size="14px"></q-icon>
-                            <strong class="font-14 text-grey-7">{{color.name}}</strong>
+                          <div class="color-box text-center cursor-pointer">
+                            <img v-if="color.image" :src="color.image" class="image-color inactive-image" />
+                            <img v-else src="assets/images/icons/default-color.svg" class="image-color inactive-image" />
+                            <div class="q-mt-xs">
+                              <q-icon name="fa-duotone fa-solid fa-lock" class="q-mr-xs" color="red-8" size="14px"></q-icon>
+                              <strong class="font-14 text-grey-7">{{color.name}}</strong>
+                            </div>
                           </div>
                         </template>
 
-                      </div>
                     </div>
                   </div>
                   <q-separator class="q-mt-sm q-mb-sm" />
