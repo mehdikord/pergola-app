@@ -288,33 +288,37 @@ export default {
               </template>
               <template v-else>
 
+                <template v-if="level === 'start_color'">
+                  <div class="q-mt-md row justify-center">
+                    <div  class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
+                      <div class="color-box text-center cursor-pointer" @click="Change_Level('مشکی',17)">
+                        <img src="https://core.pergola.ir/storage/attachments/colors/images/PDaFpc63rtC9qip6z2g4ix1SbDXAC9rrgKleDWV6.jpg" class="image-color" />
+                        <div class="q-mt-xs">
+                          <strong class="font-14 text-grey-9">مشکی طبیعی</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
                 <div v-for="(form_color,index) in from_colors">
                     <div class="text-center">
                       <strong class="text-purple-8 font-16">{{index}}</strong>
                     </div>
                     <div class="q-mt-md row justify-center">
                       <div v-for="color in form_color" class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
+
                         <template v-if="level === 'start_color'">
-                          <template v-if="color.id === 17 ">
-                            <div class="color-box text-center cursor-pointer" @click="Change_Level(color.name,color.id)">
-                              <img v-if="color.image" :src="color.image" class="image-color" />
-                              <img v-else src="assets/images/icons/default-color.svg" class="image-color" />
-                              <div class="q-mt-xs">
-                                <strong class="font-14 text-grey-9">{{color.name}}</strong>
-                              </div>
+                          <div class="color-box text-center cursor-pointer">
+                            <img v-if="color.image" :src="color.image" class="image-color inactive-image" />
+                            <img v-else src="assets/images/icons/default-color.svg" class="image-color inactive-image" />
+                            <div class="q-mt-xs">
+                              <q-icon name="fa-duotone fa-solid fa-lock" class="q-mr-xs" color="red-8" size="14px"></q-icon>
+                              <strong class="font-14 text-grey-7">{{color.name}}</strong>
                             </div>
-                          </template>
-                          <template v-else>
-                            <div class="color-box text-center cursor-pointer">
-                              <img v-if="color.image" :src="color.image" class="image-color inactive-image" />
-                              <img v-else src="assets/images/icons/default-color.svg" class="image-color inactive-image" />
-                              <div class="q-mt-xs">
-                                <q-icon name="fa-duotone fa-solid fa-lock" class="q-mr-xs" color="red-8" size="14px"></q-icon>
-                                <strong class="font-14 text-grey-7">{{color.name}}</strong>
-                              </div>
-                            </div>
-                          </template>
+                          </div>
                         </template>
+
+
                         <template v-if="level === 'end_color'">
 
                           <template v-if="color.is_active">
@@ -404,8 +408,7 @@ export default {
               به رنگ ( <strong>{{answer.to_color.name}}</strong> )
               مراحل گفته شده را با دقت انجام دهید
             </div>
-            <div class="q-mt-lg">
-
+            <div class="q-mt-lg"> 
               <div v-for="(item,index) in answer.answers" class="info-box q-mb-md">
                 <div class="text-center font-15">
                   <strong class="text-grey-9"> مرحله : </strong><strong class="text-red-6">{{index + 1}}</strong>
