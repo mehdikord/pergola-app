@@ -9,7 +9,7 @@ export default {
   name: "Hair_Coloring",
   mounted() {
     this.Get_From_Colors();
-    this.Get_To_Colors();
+    // this.Get_To_Colors();
     this.Get_Options();
     if (Stores_Auth().AuthGetCheckAuth){
       this.User_Plan_Active();
@@ -24,6 +24,7 @@ export default {
       level : 'start_color',
       from_colors:[],
       from_colors_loading:true,
+      to_colors_loading:false,
       to_colors:[],
       options:[],
       items :{
@@ -45,7 +46,7 @@ export default {
   methods:{
     Stores_Auth,
     Get_From_Colors(){
-      Stores_Colors().Grouping().then(res => {
+      Stores_Colors().First().then(res => {
         this.from_colors = res.data.result;
         this.from_colors_loading = false;
       })
@@ -68,19 +69,14 @@ export default {
       this.search = null;
       this.Get_From_Colors()
     },
+    Get_To_Colors(id){
+      this.to_colors_loading=true;
+      Stores_Colors().Second(id).then(res => {
+        this.to_colors = res.data.result;
+        this.to_colors_loading = false;
 
-    Get_To_Colors(){
-      Stores_Colors().All().then(res => {
-        this.to_colors = [];
-        res.data.result.forEach(item => {
-          this.to_colors.push({
-            value : item.id,
-            label : item.name,
-            color : item.color,
-            image : item.image,
-
-          });
-        })
+      }).catch(error => {
+        this.to_colors_loading = false;
 
       })
     },
@@ -100,7 +96,9 @@ export default {
     },
     User_Plan_Active(){
       Stores_Plans().Active().then(res=> {
-        this.active_plan = res.data.result;
+        if (res.data.result.id){
+          this.active_plan = res.data.result;
+        }
       }).catch(error=>{
         this.Methods_Notify_Error_Server();
       })
@@ -108,6 +106,7 @@ export default {
     Change_Level(text,id) {
       if (this.level === 'start_color') {
         this.items.from_color_id  = id;
+        this.Get_To_Colors(id)
         this.level = 'end_color';
         return this.$nextTick(() => {
           window.scrollTo({
@@ -251,7 +250,7 @@ export default {
         </div>
       </q-card-section>
       <q-card-section class="q-pt-sm">
-        <div class="text-center question-title animation-fade-in">
+        <div class="text-center question-title animation-fade-in q-mb-lg">
           <strong v-if="level === 'start_color'" class="text-deep-purple-8 animation-fade-in">
             الان موهات چه رنگیه؟
           </strong>
@@ -267,95 +266,119 @@ export default {
         </div>
 
         <template v-if="level === 'start_color' || level === 'end_color' ">
-          <div class="q-mt-lg q-mb-lg text-center animation-fade-in">
-            <q-input   @update:model-value="Search_From_Colors" outlined rounded v-model="search" placeholder="جستجو رنگ ( حداقل ۲ حرف )">
-              <template v-slot:append>
-                <q-btn outline v-if="search" @click="From_Clear_Search" class="font-13" size="sm" color="red" rounded icon="fa-duotone fa-times fa-solid" label="حذف جستجتو"></q-btn>
-                <q-icon v-else name="fa-duotone fa-magnifying-glass fa-solid q-mr-sm fa-bounce" size="29px" color="deep-orange-8" ></q-icon>
-              </template>
-            </q-input>
-          </div>
-          <template v-if="from_colors_loading">
-            <global_loading_colorful size="115" text="درحال دریافت اطلاعات"></global_loading_colorful>
-          </template>
-          <template v-else class="q-mt-md animation-fade-in">
-            <template v-if="search_loading">
-              <global_searching></global_searching>
+<!--          <div class="q-mt-lg q-mb-lg text-center animation-fade-in">-->
+<!--            <q-input   @update:model-value="Search_From_Colors" outlined rounded v-model="search" placeholder="جستجو رنگ ( حداقل ۲ حرف )">-->
+<!--              <template v-slot:append>-->
+<!--                <q-btn outline v-if="search" @click="From_Clear_Search" class="font-13" size="sm" color="red" rounded icon="fa-duotone fa-times fa-solid" label="حذف جستجتو"></q-btn>-->
+<!--                <q-icon v-else name="fa-duotone fa-magnifying-glass fa-solid q-mr-sm fa-bounce" size="29px" color="deep-orange-8" ></q-icon>-->
+<!--              </template>-->
+<!--            </q-input>-->
+<!--          </div>-->
+
+
+
+
+          <template v-if="level==='start_color'">
+            <template v-if="from_colors_loading">
+              <global_loading_colorful size="115" text="درحال دریافت اطلاعات"></global_loading_colorful>
             </template>
-            <template v-else>
-              <template v-if="from_colors.length < 1">
-                <global_empty></global_empty>
+            <template v-else class="q-mt-lg animation-fade-in">
+              <template v-if="search_loading">
+                <global_searching></global_searching>
               </template>
               <template v-else>
-
-                <template v-if="level === 'start_color'">
-                  <div class="q-mt-md row justify-center">
-                    <div  class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
-                      <div class="color-box text-center cursor-pointer" @click="Change_Level('مشکی',17)">
-                        <img src="https://core.pergola.ir/storage/attachments/colors/images/PDaFpc63rtC9qip6z2g4ix1SbDXAC9rrgKleDWV6.jpg" class="image-color" />
-                        <div class="q-mt-xs">
-                          <strong class="font-14 text-grey-9">مشکی طبیعی</strong>
+                <template v-if="from_colors.length < 1">
+                  <global_empty></global_empty>
+                </template>
+                <div v-else v-for="(form_color,index) in from_colors">
+                  <template v-if="index === 'actives'">
+                    <div class="q-mt-md row justify-center">
+                      <div v-for="color in form_color" class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
+                        <div class="color-box text-center cursor-pointer" @click="Change_Level(color.name,color.id)">
+                          <img v-if="color.image" :src="color.image" class="image-color" />
+                          <img v-else src="assets/images/icons/default-color.svg" class="image-color" />
+                          <div class="q-mt-xs">
+                            <strong class="font-14 text-grey-9">{{color.name}}</strong>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </template>
-                <div v-for="(form_color,index) in from_colors">
-                    <div class="text-center">
-                      <strong class="text-purple-8 font-16">{{index}}</strong>
-                    </div>
+                    <q-separator class="q-mt-sm q-mb-sm" />
+                  </template>
+                  <template v-if="index === 'inactives'">
                     <div class="q-mt-md row justify-center">
                       <div v-for="color in form_color" class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
-
-                        <template v-if="level === 'start_color'">
-                          <div class="color-box text-center cursor-pointer">
-                            <img v-if="color.image" :src="color.image" class="image-color inactive-image" />
-                            <img v-else src="assets/images/icons/default-color.svg" class="image-color inactive-image" />
-                            <div class="q-mt-xs">
-                              <q-icon name="fa-duotone fa-solid fa-lock" class="q-mr-xs" color="red-8" size="14px"></q-icon>
-                              <strong class="font-14 text-grey-7">{{color.name}}</strong>
-                            </div>
+                        <div class="color-box text-center cursor-pointer">
+                          <img v-if="color.image" :src="color.image" class="image-color inactive-image" />
+                          <img v-else src="assets/images/icons/default-color.svg" class="image-color inactive-image" />
+                          <div class="q-mt-xs">
+                            <q-icon name="fa-duotone fa-solid fa-lock" class="q-mr-xs" color="red-8" size="14px"></q-icon>
+                            <strong class="font-14 text-grey-7">{{color.name}}</strong>
                           </div>
-                        </template>
-
-
-                        <template v-if="level === 'end_color'">
-
-                          <template v-if="color.is_active">
-                            <div class="color-box text-center cursor-pointer" @click="Change_Level(color.name,color.id)">
-                              <img v-if="color.image" :src="color.image" class="image-color" />
-                              <img v-else src="assets/images/icons/default-color.svg" class="image-color" />
-                              <div class="q-mt-xs">
-                                <strong class="font-14 text-grey-9">{{color.name}}</strong>
-                              </div>
-                            </div>
-                          </template>
-                          <template v-else>
-                            <div class="color-box text-center cursor-pointer">
-                              <img v-if="color.image" :src="color.image" class="image-color inactive-image" />
-                              <img v-else src="assets/images/icons/default-color.svg" class="image-color inactive-image" />
-                              <div class="q-mt-xs">
-                                <q-icon name="fa-duotone fa-solid fa-lock" class="q-mr-xs" color="red-8" size="14px"></q-icon>
-                                <strong class="font-14 text-grey-7">{{color.name}}</strong>
-                              </div>
-                            </div>
-                          </template>
-                        </template>
-
-
-
+                        </div>
                       </div>
                     </div>
                     <q-separator class="q-mt-sm q-mb-sm" />
-                  </div>
+                  </template>
 
 
+                </div>
               </template>
             </template>
-
-
           </template>
+          <template v-if="level==='end_color'">
+            <template v-if="to_colors_loading">
+              <global_loading_colorful size="115" text="درحال دریافت اطلاعات"></global_loading_colorful>
+            </template>
+            <template v-else class="q-mt-lg animation-fade-in">
+              <template v-if="search_loading">
+                <global_searching></global_searching>
+              </template>
+              <template v-else>
+                <template v-if="to_colors.length < 1">
+                  <global_empty></global_empty>
+                </template>
+                <div v-else v-for="(to_color,index) in to_colors">
+                  <template v-if="index === 'actives'">
+                    <div class="q-mt-md row justify-center">
+                      <div v-for="color in to_color" class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
+                        <div class="color-box text-center cursor-pointer" @click="Change_Level(color.name,color.id)">
+                          <img v-if="color.image" :src="color.image" class="image-color" />
+                          <img v-else src="assets/images/icons/default-color.svg" class="image-color" />
+                          <div class="q-mt-xs">
+                            <strong class="font-14 text-grey-9">{{color.name}}</strong>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <q-separator class="q-mt-sm q-mb-sm" />
+                  </template>
+                  <template v-if="index === 'inactives'">
+                    <div class="q-mt-md row justify-center">
+                      <div v-for="color in to_color" class="col-sm-4 col-xs-4 col-md-2 col-lg-2 col-xl-2 q-px-xs q-mb-md">
+                        <div class="color-box text-center cursor-pointer">
+                          <img v-if="color.image" :src="color.image" class="image-color inactive-image" />
+                          <img v-else src="assets/images/icons/default-color.svg" class="image-color inactive-image" />
+                          <div class="q-mt-xs">
+                            <q-icon name="fa-duotone fa-solid fa-lock" class="q-mr-xs" color="red-8" size="14px"></q-icon>
+                            <strong class="font-14 text-grey-7">{{color.name}}</strong>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <q-separator class="q-mt-sm q-mb-sm" />
+                  </template>
+
+                </div>
+              </template>
+            </template>
+          </template>
+
+
+
+
         </template>
+
         <template v-if="level === 'info'">
           <div v-for="option in options" class="col-md-4 col-xs-12 q-px-sm q-mb-sm">
             <q-select
@@ -460,7 +483,7 @@ export default {
 
         <q-dialog
             v-model="dialog_auth"
-            position="top"
+
         >
           <q-card style="width: 100%">
             <q-card-section v-if="Stores_Auth().AuthGetCheckAuth">
@@ -471,8 +494,8 @@ export default {
                     برای استفاده از این قابلیت باید اشتراک ویژه داشته باشید !
                   </strong>
                 </div>
-                <div class="q-mt-md">
-                  <q-btn :to="{name : 'plans'}" class="auth-btn" color="pink-7" glossy rounded size="sm" label="دریافت اشتراک ویژه"></q-btn>
+                <div class="q-mt-md q-mb-md">
+                  <q-btn :to="{name : 'plans'}" class="auth-btn" color="pink-7" glossy rounded  label="دریافت اشتراک ویژه"></q-btn>
                 </div>
               </div>
             </q-card-section>
@@ -484,15 +507,11 @@ export default {
                     برای انجام محاسبات ابتدا باید وار حساب کاربری خود شوید
                   </strong>
                 </div>
-                <div class="q-mt-md">
-                  <q-btn :to="{name : 'auth'}" class="auth-btn" color="pink-7" glossy rounded size="sm" label="ورود / ثبت نام در پرگولا"></q-btn>
+                <div class="q-mt-md q-mb-md">
+                  <q-btn :to="{name : 'auth'}" class="auth-btn" color="pink-7" glossy rounded  label="ورود / ثبت نام در پرگولا"></q-btn>
                 </div>
               </div>
             </q-card-section>
-            <q-card-actions align="right" class="q-mb-sm q-px-md q-mt-sm">
-              <q-btn size="sm" class="submit-btn" color="grey-8"  rounded glossy label="بستن" icon="fa-duotone fa-solid fa-times-circle" v-close-popup />
-            </q-card-actions>
-
           </q-card>
         </q-dialog>
 
@@ -606,6 +625,9 @@ export default {
     border-radius: 50%;
     width: 65px;
     height: 65px;
+  }
+  .bg-image{
+    width: 250px !important;
   }
 }
 

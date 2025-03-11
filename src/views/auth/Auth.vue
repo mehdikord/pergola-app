@@ -112,7 +112,7 @@ export default {
           <div class="col-sm-9 col-xs-10 col-md-6 col-lg-4 col-xl-4 text-center">
             <strong class="text-pink-7">کد پیامک شده به شماره موبایل را وارد کنید</strong>
             <div class="q-mt-md">
-              <q-input :error="this.Methods_Validation_Check(errors,'code')" v-model="code" dir="ltr" outlined rounded color="blue-grey-4" placeholder="X X X X X X" >
+              <q-input :error="this.Methods_Validation_Check(errors,'code')" v-model="code" type="number" dir="ltr" outlined rounded color="blue-grey-4" placeholder="X X X X X X" >
                 <template v-slot:append>
                   <q-icon name="fa-duotone fa-regular fa-message-sms text-deep-purple-9" />
                 </template>
