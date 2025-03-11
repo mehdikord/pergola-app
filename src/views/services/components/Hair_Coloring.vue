@@ -464,7 +464,7 @@ export default {
                     <strong class="text-red font-15">{{item.answer.oxidant_time}}</strong>
                   </div>
                   <div class="q-mt-lg" v-if="item.answer.text">
-                    <div v-html="item.answer.text"></div>
+                    <div class="answer-class" v-html="item.answer.text"></div>
                   </div>
                 </div>
 
@@ -544,16 +544,18 @@ export default {
 </template>
 
 <style scoped>
+.answer-class > img {
+  max-width: 100% !important;
+}
+
 .inactive-image {
   filter: grayscale(100%);
-  opacity: 0.6; /* اختیاری - کاهش شفافیت */
-  cursor: not-allowed; /* اختیاری - نشانگر غیرفعال */
+  opacity: 0.6;
+  cursor: not-allowed;
 
-  /* پشتیبانی از مرورگرهای قدیمی */
   -webkit-filter: grayscale(100%);
 }
 
-/* حالت hover (اختیاری) */
 .inactive-image:hover {
   opacity: 0.8;
   transition: all 0.3s ease;
