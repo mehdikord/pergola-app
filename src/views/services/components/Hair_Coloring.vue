@@ -464,7 +464,7 @@ export default {
                     <strong class="text-red font-15">{{item.answer.oxidant_time}}</strong>
                   </div>
                   <div class="q-mt-lg" v-if="item.answer.text">
-                    <div class="answer-class" v-html="item.answer.text"></div>
+                    <div style="max-width: 99%!important;" class="answer-class" v-html="item.answer.text"></div>
                   </div>
                 </div>
 
