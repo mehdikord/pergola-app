@@ -544,7 +544,7 @@ export default {
 </template>
 
 <style scoped>
-.answer-class > img {
+.answer-class  img {
   max-width: 100% !important;
 }
 
