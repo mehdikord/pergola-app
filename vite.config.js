@@ -17,6 +17,7 @@ export default defineConfig({
       strategies: 'generateSW',
       manifest: {
         name: 'Pergola',
+        prefer_related_applications: false,
         short_name: 'Pergola',
         description: '...',
         theme_color: '#ffffff',

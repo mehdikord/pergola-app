@@ -3,6 +3,7 @@
 import Template_Main_Header from "@/components/Templates/Template_Main_Header.vue";
 import Template_Main_Footer from "@/components/Templates/Template_Main_Footer.vue";
 import ComingSoon from "@/views/ComingSoon.vue";
+import InstallPrompt from "@/views/InstallPrompt.vue";
 
 export default {
   name: "App",
@@ -10,6 +11,7 @@ export default {
     "template_header" : Template_Main_Header,
     "template_footer" : Template_Main_Footer,
     'coming_soon' : ComingSoon,
+    'install_prompt' : InstallPrompt
   },
   data(){
     return {
@@ -38,6 +40,7 @@ export default {
         </q-drawer>
         <q-page-container>
           <router-view/>
+          <install_prompt></install_prompt>
         </q-page-container>
         <q-footer class="footer-style bg-transparent">
           <template_footer></template_footer>
