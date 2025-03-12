@@ -3,14 +3,45 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
-
+import { VitePWA } from 'vite-plugin-pwa';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     quasar({
       sassVariables: 'src/quasar-variables.sass'
-    })
+    }),
+    VitePWA({
+      registerType: 'autoUpdate', // سرویس‌ورکر به‌صورت خودکار آپدیت می‌شه
+      manifest: {
+        name: 'Pergola',
+        short_name: 'Pergola',
+        description: '',
+        theme_color: '#ffffff',
+        background_color: '#ffffff',
+        display: 'standalone',
+        start_url: '/',
+        icons: [
+          {
+            src: '/icons/icon-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: '/icons/icon-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      },
+      workbox: {
+        // فایل‌هایی که می‌خوای آفلاین در دسترس باشن
+        globPatterns: ['**/*.{js,css,html,png,jpg,svg}'],
+      },
+      devOptions: {
+        enabled: true, // فعال کردن PWA توی حالت توسعه
+      },
+    }),
   ],
   resolve: {
     alias: {
