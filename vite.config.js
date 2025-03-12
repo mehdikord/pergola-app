@@ -36,7 +36,7 @@ export default defineConfig({
       },
       workbox: {
         // فایل‌هایی که می‌خوای آفلاین در دسترس باشن
-        globPatterns: ['**/*.{js,css,html,png,jpg,svg}'],
+
       },
       devOptions: {
         enabled: true, // فعال کردن PWA توی حالت توسعه
