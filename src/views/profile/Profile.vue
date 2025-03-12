@@ -157,8 +157,8 @@ export default {
               </div>
             </q-card-section>
             <q-card-actions align="right" class="q-mb-sm q-px-md q-mt-sm">
-              <q-btn @click="Edit_Profile" :loading="edit_loading" size="sm" class="submit-btn" color="blue-8"  rounded glossy label="ویرایش اطلاعات" icon="fa-duotone fa-solid fa-check-circle" />
-              <q-btn size="sm" class="submit-btn" color="grey-8"  rounded glossy label="بستن" icon="fa-duotone fa-solid fa-times-circle" v-close-popup />
+              <q-btn @click="Edit_Profile" :loading="edit_loading" class="submit-btn" color="blue-8"  rounded glossy label="ویرایش اطلاعات" icon="fa-duotone fa-solid fa-check-circle" />
+              <q-btn  class="submit-btn" color="grey-8"  rounded glossy label="بستن" icon="fa-duotone fa-solid fa-times-circle" v-close-popup />
             </q-card-actions>
           </q-card>
         </q-dialog>
@@ -286,7 +286,7 @@ export default {
   font-size: 13px !important;
 }
 .submit-btn{
-  font-size: 13px !important;
+  font-size: 14px !important;
 }
 .item-box{
   padding:8px 5px;
@@ -318,7 +318,7 @@ export default {
     width: 40%;
   }
   .submit-btn{
-    font-size: 12px !important;
+    font-size: 13px !important;
   }
   .item-box{
     padding:8px 5px;
