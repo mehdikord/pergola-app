@@ -65,7 +65,7 @@ export default {
 
 <style scoped>
 .news-image{
-  width: 80px;
+  width: 90px;
   border-radius: 8px;
 }
 .item-box{
