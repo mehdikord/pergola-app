@@ -1,11 +1,28 @@
 <template>
-  <div v-if="showInstallButton" class="install-prompt">
-    <div class="install-content">
-      <p>📱 برنامه ما را نصب کنید تا تجربه بهتری داشته باشید!</p>
-      <button @click="installApp">نصب برنامه</button>
-      <button @click="dismissPrompt">بعداً</button>
-    </div>
-  </div>
+
+
+
+  <q-dialog
+      v-model="showInstallButton"
+  >
+    <q-card style="width: 100%">
+      <q-card-section class="q-mt-md">
+        <div class="text-center">
+          <strong class="font-15">
+            برای دسترسی آسان تر برنامه پرگولا را در دستگاه خود نصب کنید
+          </strong>
+          <div class="q-mt-lg">
+            <q-btn icon="fa-duotone fa-download fa-light" @click="installApp" glossy class="q-mr-sm" color="teal-7" rounded label="نصب برنامه"></q-btn>
+            <q-btn icon="fa-duotone fa-times fa-light" @click="dismissPrompt" glossy color="grey-9" rounded label="بعدا !"></q-btn>
+          </div>
+        </div>
+      </q-card-section>
+
+    </q-card>
+  </q-dialog>
+
+
+
 </template>
 
 <script>
