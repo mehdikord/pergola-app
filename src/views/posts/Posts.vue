@@ -46,12 +46,12 @@ export default {
             <img v-else src="assets/images/icons/news.svg" class="news-image q-mt-xs" alt="">
           </div>
           <div class="col-sm-9 col-xs-9 q-pa-sm q-pl-md">
-            <div>
-              <strong class="text-grey-10 font-14">{{item.title}}</strong>
+            <div class="q-mt-sm">
+              <strong class="text-grey-10 font-13">{{item.title}}</strong>
             </div>
             <div>
               <router-link :to="{name : 'posts_show', params:{slug:item.slug}}">
-                <strong class="float-right font-13 q-mt-md text-pink-7">
+                <strong class="float-right font-12 q-mt-lg text-pink-7">
                   مشاهده کامل ...
                 </strong>
               </router-link>
@@ -65,7 +65,7 @@ export default {
 
 <style scoped>
 .news-image{
-  width: 98px;
+  width: 80px;
   border-radius: 8px;
 }
 .item-box{
