@@ -22,16 +22,7 @@ export default defineConfig({
         display: 'standalone',
         start_url: '/',
         icons: [
-          {
-            src: '/assets/icons/icon.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: '/assets/icons/icon.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
+
         ],
       },
       workbox: {
