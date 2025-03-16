@@ -12,7 +12,7 @@ name: "ComingSoon"
     <div class="text-center">
       <img src="assets/images/background/comingsoon.svg" class="image" alt="">
       <div class="q-mt-lg">
-        <strong class="text-grey-8 font-24 font-lalezar font-weight-100">پرگولا در دست ساخت است ... !</strong>
+        <strong class="text-grey-8 font-18 font-lalezar font-weight-100">پرگولا درحال بروزرسانی میباشد ، از شکیبایی شما متشکریم </strong>
       </div>
     </div>
   </div>

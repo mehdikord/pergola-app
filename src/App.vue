@@ -26,7 +26,7 @@ export default {
 
   <q-layout view="lHh Lpr lFf">
     <div class="app-container">
-      <template v-if="!this.$route.name === 'index'">
+      <template v-if="this.$route.name === 'index'">
         <q-page-container>
           <coming_soon></coming_soon>
         </q-page-container>
