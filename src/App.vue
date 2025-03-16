@@ -26,28 +26,19 @@ export default {
 
   <q-layout view="lHh Lpr lFf">
     <div class="app-container">
-      <template v-if="this.$route.name === 'index'">
-        <q-page-container>
-          <coming_soon></coming_soon>
-        </q-page-container>
-      </template>
-      <template v-else>
-        <q-header class="header-bg" elevated style=" margin: 0 auto">
-          <template_header></template_header>
-        </q-header>
-        <q-drawer  side="left" behavior="mobile" elevated>
-          <!-- drawer content -->
-        </q-drawer>
-        <q-page-container>
-          <router-view/>
-          <install_prompt></install_prompt>
-        </q-page-container>
-        <q-footer class="footer-style bg-transparent">
-          <template_footer></template_footer>
-        </q-footer>
-      </template>
-
-
+      <q-header class="header-bg" elevated style=" margin: 0 auto">
+        <template_header></template_header>
+      </q-header>
+      <q-drawer  side="left" behavior="mobile" elevated>
+        <!-- drawer content -->
+      </q-drawer>
+      <q-page-container>
+        <router-view/>
+        <install_prompt></install_prompt>
+      </q-page-container>
+      <q-footer class="footer-style bg-transparent">
+        <template_footer></template_footer>
+      </q-footer>
     </div>
 
   </q-layout>
