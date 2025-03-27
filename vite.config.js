@@ -4,12 +4,16 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 import { VitePWA } from 'vite-plugin-pwa';
+import legacy from '@vitejs/plugin-legacy'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     quasar({
-      sassVariables: 'src/quasar-variables.sass'
+      sassVariables: 'src/quasar-variables.sass',
+      components: ['QBtn', 'QIcon' /* ... */],
+      directives: ['Ripple', 'TouchPan' /* ... */]
     }),
     VitePWA({
       registerType: 'autoUpdate',
@@ -45,6 +49,17 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,png,svg,ico,woff2}'],
         runtimeCaching: [
           {
+            urlPattern: ({ url }) => url.pathname === '/',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'html-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 24 * 60 * 60 // 1 روز
+              }
+            }
+          },
+          {
             urlPattern: ({request}) => request.destination === 'document',
             handler: 'NetworkFirst',
           },
@@ -59,19 +74,30 @@ export default defineConfig({
               },
             },
           }
-        ]
+        ],
+        cacheId: 'pergola-cache-v1.2',
       },
+      includeAssets: [
+        'favicon.ico',
+        'robots.txt',
+        'webfonts/**/*.woff2' // اطمینان از کش فونت‌ها
+      ],
       devOptions: {
         enabled: true,
         type: 'module',
         navigateFallback: 'index.html'
       }
+    }),
+    legacy({
+      targets: ['defaults', 'not IE 11']
     })
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       'assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
+      // اضافه کردن مسیرهای ضروری
+      'public': fileURLToPath(new URL('./public', import.meta.url))
     },
     mainFields: [
       'browser',
@@ -79,6 +105,13 @@ export default defineConfig({
       'main',
       'jsnext:main',
       'jsnext'
-    ]
+    ],
+    build: {
+      // افزایش حداکثر اندازه asset
+      assetsInlineLimit: 4096,
+      // فعال کردن minify برای همه فایل‌ها
+      minify: 'terser',
+      chunkSizeWarningLimit: 1500
+    }
   }
 })

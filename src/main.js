@@ -43,6 +43,9 @@ app.use(Quasar, {
         }, // import Quasar plugins and add here
     lang: quasarLang,
     iconSet: quasarIconSet,
+    config :{
+        animations: 'none'
+    }
 
 })
 
