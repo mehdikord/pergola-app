@@ -18,7 +18,7 @@ export default {
       <router-link :to="{name :'posts'}">
       <div class="service-box bg-blue-7 ">
         <q-icon name="fa-duotone fa-solid fa-book-open-cover" class="service-icon" color="white"></q-icon>
-        <strong class="float-right text-white service-title">اصطلاحات رنگ و مو</strong>
+        <strong class="float-right text-white service-title">آموزش های رنگ و مو</strong>
       </div>
       </router-link>
     </div>
@@ -29,10 +29,12 @@ export default {
       </div>
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12 q-px-xs q-mb-md">
-      <div class="service-box bg-deep-purple-6 ">
-        <q-icon name="fa-duotone fa-light fa-paintbrush" class="service-icon" color="white"></q-icon>
-        <strong class="float-right text-white service-title">کارخانه رنگ</strong>
-      </div>
+      <router-link :to="{name : 'pages_show' , params : {slug : 'coloring'}}">
+        <div class="service-box bg-deep-purple-6 ">
+          <q-icon name="fa-duotone fa-light fa-paintbrush" class="service-icon" color="white"></q-icon>
+          <strong class="float-right text-white service-title">کارخانه رنگ مو</strong>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>

@@ -11,6 +11,7 @@ import {Stores_Auth} from "@/stores/auth/auth.js";
 import Plans from "@/views/plans/Plans.vue";
 import Posts from "@/views/posts/Posts.vue";
 import Posts_Show from "@/views/posts/Posts_Show.vue";
+import Page from "@/views/pages/Page.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -85,6 +86,14 @@ const router = createRouter({
       name : 'posts_show',
       meta : {
         title : "مشاهده نوشته"
+      },
+    },
+    {
+      path : '/pages/:slug',
+      component : Page,
+      name : 'pages_show',
+      meta : {
+        title : ""
       },
     },
     {
