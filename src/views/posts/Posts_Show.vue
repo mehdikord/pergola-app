@@ -25,13 +25,9 @@ export default {
   }
 }
 </script>
-
 <template>
   <q-card flat>
     <q-card-section>
-      <div class="text-right">
-        <q-btn :to="{name:'posts'}" color="red-7" size="xs" icon="fa-duotone fa-arrow-left fa-light" label="بازگشت" rounded class="font-13" glossy></q-btn>
-      </div>
       <template v-if="loading">
         <global_loading_colorful :size="80" text="درحال دربافت نوشته"></global_loading_colorful>
       </template>

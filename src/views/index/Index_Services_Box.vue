@@ -6,7 +6,7 @@ export default {
 
 <template>
   <div class="row">
-    <div class="col-md-3 col-sm-12 col-xs-12 q-px-xs q-mb-md">
+    <div class="col-md-6 col-sm-12 col-xs-12 q-px-xs q-mb-md">
       <router-link :to="{name :'services_coloring'}">
         <div class="service-box bg-teal-7  ">
           <q-icon name="fa-duotone fa-light fa-palette" class="service-icon" color="white"></q-icon>
@@ -14,28 +14,13 @@ export default {
         </div>
       </router-link>
     </div>
-    <div class="col-md-3 col-sm-12 col-xs-12 q-px-xs q-mb-md">
-      <router-link :to="{name :'posts'}">
-      <div class="service-box bg-blue-7 ">
-        <q-icon name="fa-duotone fa-solid fa-book-open-cover" class="service-icon" color="white"></q-icon>
-        <strong class="float-right text-white service-title">آموزش های رنگ و مو</strong>
-      </div>
-      </router-link>
-    </div>
-    <div class="col-md-3 col-sm-12 col-xs-12 q-px-xs q-mb-md">
-      <div class="service-box bg-deep-orange-6 ">
+    <div class="col-md-6 col-sm-12 col-xs-12 q-px-xs q-mb-md">
+      <div class="service-box bg-indigo-8 ">
         <q-icon name="fa-duotone fa-light fa-face-viewfinder" class="service-icon" color="white"></q-icon>
         <strong class="float-right text-white service-title">آنالیز چهره شما</strong>
       </div>
     </div>
-    <div class="col-md-3 col-sm-12 col-xs-12 q-px-xs q-mb-md">
-      <router-link :to="{name : 'pages_show' , params : {slug : 'coloring'}}">
-        <div class="service-box bg-deep-purple-6 ">
-          <q-icon name="fa-duotone fa-light fa-paintbrush" class="service-icon" color="white"></q-icon>
-          <strong class="float-right text-white service-title">کارخانه رنگ مو</strong>
-        </div>
-      </router-link>
-    </div>
+
   </div>
 </template>
 

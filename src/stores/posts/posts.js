@@ -1,9 +1,18 @@
 import { defineStore } from 'pinia'
 export const Stores_Posts = defineStore('posts',{
     actions : {
-        Index(params){
+        Index(category){
             return new Promise((resolve, reject) => {
-                axios.get('posts').then(response =>{
+                axios.get('posts/'+category,).then(response =>{
+                    return resolve(response);
+                }).catch(error =>{
+                    return reject(error);
+                })
+            })
+        },
+        Categories(params){
+            return new Promise((resolve, reject) => {
+                axios.get('post-categories').then(response =>{
                     return resolve(response);
                 }).catch(error =>{
                     return reject(error);
@@ -12,7 +21,16 @@ export const Stores_Posts = defineStore('posts',{
         },
         Show(slug){
             return new Promise((resolve, reject) => {
-                axios.get('posts/'+slug).then(response =>{
+                axios.get('posts/show/'+slug).then(response =>{
+                    return resolve(response);
+                }).catch(error =>{
+                    return reject(error);
+                })
+            })
+        },
+        Category_Show(slug){
+            return new Promise((resolve, reject) => {
+                axios.get('posts/category/'+slug).then(response =>{
                     return resolve(response);
                 }).catch(error =>{
                     return reject(error);

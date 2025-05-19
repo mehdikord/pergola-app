@@ -73,7 +73,7 @@ const router = createRouter({
       },
     },
     {
-      path : '/posts',
+      path : '/posts/:category_id',
       component : Posts,
       name : 'posts',
       meta : {
@@ -81,7 +81,7 @@ const router = createRouter({
       },
     },
     {
-      path : '/posts/:slug',
+      path : '/posts/show/:slug',
       component : Posts_Show,
       name : 'posts_show',
       meta : {

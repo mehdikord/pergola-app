@@ -5,18 +5,28 @@ export default {
   name: "Posts",
   mounted() {
     this.Get_Items();
+    this.Get_Category();
   },
   data(){
     return {
       items:[],
+      category: null,
       loading:true,
 
     }
   },
   methods:{
+    Get_Category(){
+      Stores_Posts().Category_Show(this.$route.params.category_id).then(res=>{
+        this.category = res.data.result;
+        this.loading=false;
+      }).catch(error=>{
+
+      })
+    },
     Get_Items(){
-      Stores_Posts().Index().then(res=>{
-        res.data.result.data.forEach((item)=>{
+      Stores_Posts().Index(this.$route.params.category_id).then(res=>{
+        res.data.result.forEach((item)=>{
           this.items.push(item)
         })
         this.loading=false;
@@ -31,8 +41,11 @@ export default {
 <template>
   <q-card flat>
     <q-card-section >
-      <div class=" text-center q-mt-sm res-page-title font-lalezar text-pink-6 animation-fade-in">
-        نوشته ها و مقالات پرگولا
+      <div v-if="category" class=" text-center q-mt-sm res-page-title font-lalezar text-pink-6 animation-fade-in">
+        {{ category.name }}
+      </div>
+      <div v-if="category && category.description" class="text-center q-mt-sm text-grey-8">
+        {{category.description}}
       </div>
     </q-card-section>
     <q-card-section>
