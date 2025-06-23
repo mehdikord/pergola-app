@@ -15,7 +15,7 @@ export default {
   },
   methods:{
     Get_Items(){
-      Stores_Posts().Categories().then((res)=>{
+      Stores_Posts().Categories_Parents().then((res)=>{
         this.items = res.data.result;
         this.loading=false;
       }).catch((err)=>{
@@ -35,10 +35,10 @@ export default {
     <div class="q-px-sm">
       <global_loading_colorful size="100" v-if="loading"></global_loading_colorful>
       <template v-else>
-        <router-link v-for="item in items"  :to="{'name' : 'posts',params:{'category_id' : item.id}}">
-          <div class="service-box q-mt-md" :style="{'backgroundColor' : item.color}">
+        <router-link v-for="item in items"  :to="{name : 'posts_categories',params:{'id' : item.id}}">
+          <div class="service-box q-mt-md" :style="{'backgroundColor' : item.color ?? '#212121'}">
+            <q-icon name="fa-duotone fa-book-open" class="q-mr-md" size="30px"></q-icon>
             <strong class="font-15">{{item.name}}</strong>
-            <span class="float-right"><strong class="q-mr-xs">{{item.posts_count}}</strong> نوشته</span>
           </div>
         </router-link>
       </template>
@@ -50,9 +50,8 @@ export default {
 <style scoped>
 
 .service-box{
-  padding: 22px 15px;
+  padding: 25px 15px;
   border-radius: 20px;
-  border: 5px double #ffffff;
   color: white;
 }
 

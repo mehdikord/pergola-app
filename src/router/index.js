@@ -12,6 +12,7 @@ import Plans from "@/views/plans/Plans.vue";
 import Posts from "@/views/posts/Posts.vue";
 import Posts_Show from "@/views/posts/Posts_Show.vue";
 import Page from "@/views/pages/Page.vue";
+import Categories from "@/views/posts/Categories.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -78,6 +79,14 @@ const router = createRouter({
       name : 'posts',
       meta : {
         title : "نوسته ها"
+      },
+    },
+    {
+      path : '/posts/categories/:id',
+      component : Categories,
+      name : 'posts_categories',
+      meta : {
+        title : "دسته بندی نوشته ها"
       },
     },
     {

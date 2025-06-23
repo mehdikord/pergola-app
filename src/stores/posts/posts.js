@@ -19,6 +19,24 @@ export const Stores_Posts = defineStore('posts',{
                 })
             })
         },
+        Categories_Parents(params){
+            return new Promise((resolve, reject) => {
+                axios.get('post-categories-parent').then(response =>{
+                    return resolve(response);
+                }).catch(error =>{
+                    return reject(error);
+                })
+            })
+        },
+        Categories_Children(params){
+            return new Promise((resolve, reject) => {
+                axios.get('post-categories/'+params.id).then(response =>{
+                    return resolve(response);
+                }).catch(error =>{
+                    return reject(error);
+                })
+            })
+        },
         Show(slug){
             return new Promise((resolve, reject) => {
                 axios.get('posts/show/'+slug).then(response =>{
