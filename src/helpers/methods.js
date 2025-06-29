@@ -121,9 +121,54 @@ export default {
 
         Methods_Date_Gregorian_To_Jalali(date){
             return moment(date, 'YYYY-M-D').format('jYYYY-jMM-jDD')
+        },
+
+        Methods_File_Type(url) {
+            const extension = url.split('.').pop().split('?')[0].toLowerCase();
+
+            const videoExtensions = ['mp4', 'mkv', 'avi', 'mov', 'webm'];
+            const audioExtensions = ['mp3', 'wav', 'ogg', 'aac', 'flac'];
+            const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp'];
+
+            if (videoExtensions.includes(extension)) {
+                return 'video';
+            } else if (audioExtensions.includes(extension)) {
+                return 'voice';
+            } else if (imageExtensions.includes(extension)) {
+                return 'image';
+            } else {
+                return 'other';
+            }
+        },
+
+        async Methods_Downloader(url, fileName) {
+
+            try {
+                let path = this.$api_assets+url;
+                // استفاده از مسیر پروکسی شده
+                const proxyUrl = `/api/${path}`;
+                const response = await fetch(proxyUrl);
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = fileName || path.split('/').pop() || 'download';
+                document.body.appendChild(link);
+                link.click();
+
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(blobUrl);
+                }, 100);
+            } catch (error) {
+                console.error('Download error:', error);
+            }
         }
 
 
     }
-
 }

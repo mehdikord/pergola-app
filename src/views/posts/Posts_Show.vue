@@ -41,6 +41,28 @@ export default {
         <div class="q-mt-md">
           <span v-html="item.description"></span>
         </div>
+        <div v-if="item.files.length" class="q-mt-md">
+          <div class="q-mb-md">
+            <strong class="text-grey-7">فایل های پیوست شده</strong>
+            <div class="q-mt-md" v-for="file in item.files">
+              <div class="text-primary font-weight-500 q-mb-md font-15">{{ file.title }}</div>
+              <template v-if="Methods_File_Type(file.file_url) === 'video'">
+                <div class="q-mt-md q-mb-md">
+                  <video width="100%" :src="this.$api_assets+file.file_url" controls></video>
+                </div>
+              </template>
+              <template v-if="Methods_File_Type(file.file_url) === 'image'">
+                <q-btn @click="Methods_Downloader(file.file_url,file.title)" class="" color="teal-7" icon="fa-duotone fa-download" label="دریافت تصویر" outline rounded></q-btn>
+              </template>
+              <template v-if="Methods_File_Type(file.file_url) === 'other'">
+                <q-btn @click="Methods_Downloader(file.file_url,file.title)" class="" color="deep-orange-7" icon="fa-duotone fa-download" label="دریافت فایل" outline rounded></q-btn>
+              </template>
+
+
+
+            </div>
+          </div>
+        </div>
 
       </template>
 
