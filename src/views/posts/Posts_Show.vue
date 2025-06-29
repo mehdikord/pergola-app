@@ -52,10 +52,14 @@ export default {
                 </div>
               </template>
               <template v-if="Methods_File_Type(file.file_url) === 'image'">
+
                 <q-btn @click="Methods_Downloader(file.file_url,file.title)" class="" color="teal-7" icon="fa-duotone fa-download" label="دریافت تصویر" outline rounded></q-btn>
               </template>
               <template v-if="Methods_File_Type(file.file_url) === 'other'">
-                <q-btn @click="Methods_Downloader(file.file_url,file.title)" class="" color="deep-orange-7" icon="fa-duotone fa-download" label="دریافت فایل" outline rounded></q-btn>
+                <a :href="this.$api_assets+file.file_url" target="_blank" download="">
+                  <q-btn  class="" color="deep-orange-7" icon="fa-duotone fa-download" label="دریافت فایل" outline rounded></q-btn>
+                </a>
+
               </template>
 
 
