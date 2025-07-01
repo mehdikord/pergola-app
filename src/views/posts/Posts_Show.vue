@@ -79,4 +79,9 @@ export default {
   width: 100%;
   border-radius: 10px;
 }
+img{
+  max-width: 100% !important;
+  width: 99%!important;
+  height: auto !important;
+}
 </style>
