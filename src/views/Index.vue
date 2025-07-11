@@ -27,7 +27,7 @@ export default {
         <img class="logo-image" src="assets/images/icons/logo.png" alt="">
       </div>
       <div class="text-center subtitle-text q-mt-sm">
-        <strong class="text-pink-9">
+        <strong class="text-grey-8">
           پرگولا اولین پلتفرم اختصاصی مو و رنگ مو
         </strong>
       </div>
@@ -46,17 +46,17 @@ export default {
 <style scoped>
 
 .subtitle-text{
-  font-size: 19px;
+  font-size: 18px;
 }
 .logo-image{
-  width: 340px;
+  width: 330px;
 }
 @media only screen and (max-width: 768px) {
   .subtitle-text{
-    font-size: 16px;
+    font-size: 15px;
   }
   .logo-image{
-    width: 260px;
+    width: 250px;
   }
 }
 </style>

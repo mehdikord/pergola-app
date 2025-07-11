@@ -30,7 +30,7 @@ export default {
 <template>
   <div class="q-mt-md">
     <div class="text-center q-mb-lg">
-      <strong class="font-19">آموزش ها و مقالات پرگولا</strong>
+      <strong class="font-17 text-pink-8">آموزش ها و مقالات پرگولا</strong>
     </div>
     <div class="q-px-sm">
       <global_loading_colorful size="100" v-if="loading"></global_loading_colorful>

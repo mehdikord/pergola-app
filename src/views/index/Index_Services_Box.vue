@@ -6,48 +6,32 @@ export default {
 
 <template>
   <div class="row">
-    <div class="col-md-6 col-sm-12 col-xs-12 q-px-xs q-mb-md">
-      <router-link :to="{name :'services_coloring'}">
-        <div class="service-box bg-teal-7  ">
-          <q-icon name="fa-duotone fa-light fa-palette" class="service-icon" color="white"></q-icon>
-          <strong class="float-right text-white service-title">هوش مصنوعی رنگ مو</strong>
-        </div>
-      </router-link>
-    </div>
-    <div class="col-md-6 col-sm-12 col-xs-12 q-px-xs q-mb-md">
-      <div class="service-box bg-indigo-8 ">
-        <q-icon name="fa-duotone fa-light fa-face-viewfinder" class="service-icon" color="white"></q-icon>
-        <strong class="float-right text-white service-title">آنالیز چهره شما</strong>
+    <div class="col-md-6 col-sm-12 col-xs-12 q-px-sm">
+      <div class="text-center">
+        <img src="@/assets/images/icons/hair-spray-animate.svg" class="svg-animate" alt="">
       </div>
     </div>
-
+    <div class="col-md-6 col-sm-12 col-xs-12 q-px-sm">
+      <div class="text-center font-18 font-weight-600 text-pink-8">
+        هوش مصنوعی رنگ مو
+      </div>
+      <div class="text-grey-7 text-center q-mt-xs font-15">
+        تغییر رنگ مو با کمک هوش مصنوعی پرگولا !
+      </div>
+      <div class="text-center q-mt-md q-mb-sm">
+        <q-btn :to="{name : 'services_coloring'}" color="indigo-7" outline class="font-15" rounded label="شروع تغییر رنگ مو"></q-btn>
+      </div>
+    </div>
   </div>
+
 </template>
 
 <style scoped>
-.service-box{
-  padding: 15px 15px;
-  border-radius: 20px;
-}
-.service-icon{
-  font-size: 42px;
-}
-.service-title{
-  font-size: 15px;
-  margin-top: 8px;
-}
+
 @media only screen and (max-width: 768px) {
-  .service-box{
-    padding: 20px 15px;
-    border-radius: 20px;
-  }
-  .service-icon{
-    font-size: 34px;
-  }
-  .service-title{
-    font-size: 15px;
-    margin-right: 15px;
-  }
+.svg-animate{
+  width: 300px;
+}
 }
 
 </style>
