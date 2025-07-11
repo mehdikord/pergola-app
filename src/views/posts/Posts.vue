@@ -78,6 +78,9 @@ export default {
               برای مشاهده مقالات و نوشته ها ابتدا باید وارد حساب کاربری خود شوید
             </strong>
           </div>
+          <div class="q-mt-lg text-center">
+            <q-btn color="pink-7" :to="{name : 'auth'}" rounded outline>ورود / ثبت نام در پرگولا</q-btn>
+          </div>
         </div>
       </template>
       <template v-else>
@@ -90,6 +93,9 @@ export default {
               <strong class="font-15">
                 برای مشاهده مقالات و نوشته ها باید اشتراک فعال داشته باشید
               </strong>
+            </div>
+            <div class="q-mt-lg text-center">
+              <q-btn color="pink-7" :to="{name : 'plans'}" rounded outline>دریافت اشتراک ویژه پرگولا</q-btn>
             </div>
           </div>
         </template>
