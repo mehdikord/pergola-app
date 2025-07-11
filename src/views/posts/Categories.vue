@@ -39,7 +39,9 @@ export default {
       <global_loading_colorful size="100" v-if="loading"></global_loading_colorful>
       <template v-else>
         <div v-if="items" class="q-mt-lg q-mb-md text-center">
-          <strong class="text-indigo-8 font-16">{{ items.name }}</strong>
+          <div class="text-center q-mt-sm res-page-title font-lalezar text-pink-6 animation-fade-in">
+            {{ items.name }}
+          </div>
         </div>
 
         <template v-if="items.children.length">

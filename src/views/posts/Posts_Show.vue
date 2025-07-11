@@ -10,7 +10,6 @@ export default {
     return {
       item:null,
       loading:true,
-
     }
   },
   methods:{

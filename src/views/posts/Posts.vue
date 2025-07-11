@@ -6,10 +6,11 @@ import {Stores_Plans} from "@/stores/plans/plans.js";
 export default {
   name: "Posts",
   mounted() {
-    this.Get_Items();
     this.Get_Category();
     if (Stores_Auth().AuthGetCheckAuth){
       this.User_Plan_Active();
+      this.Get_Items();
+
     }
   },
   data(){
@@ -23,6 +24,7 @@ export default {
     }
   },
   methods:{
+    Stores_Auth,
     Get_Category(){
       Stores_Posts().Category_Show(this.$route.params.category_id).then(res=>{
         this.category = res.data.result;
@@ -58,7 +60,7 @@ export default {
 <template>
   <q-card flat>
     <q-card-section >
-      <div v-if="category" class=" text-center q-mt-sm res-page-title font-lalezar text-pink-6 animation-fade-in">
+      <div v-if="category" class="text-center q-mt-sm res-page-title font-lalezar text-pink-6 animation-fade-in">
         {{ category.name }}
       </div>
       <div v-if="category && category.description" class="text-center q-mt-sm text-grey-8">
@@ -66,29 +68,58 @@ export default {
       </div>
     </q-card-section>
     <q-card-section>
-
-      <template v-if="loading">
-        <global_loading_colorful :size="80" text="درحال دربافت نوشته ها"></global_loading_colorful>
+      <template v-if="!Stores_Auth().AuthGetCheckAuth">
+        <div class="q-mt-md">
+          <div class="text-center">
+            <img src="@/assets/images/background/login_need.svg" width="240" alt="">
+          </div>
+          <div class="text-center q-mt-sm">
+            <strong class="font-15">
+              برای مشاهده مقالات و نوشته ها ابتدا باید وارد حساب کاربری خود شوید
+            </strong>
+          </div>
+        </div>
       </template>
       <template v-else>
-        <div v-for="item in items">
-          <router-link :to="{name : 'posts_show', params:{slug:item.slug}}">
-          <div class="item-box q-mb-md row">
-            <div class="col-sm-3 col-xs-3">
-              <img v-if="item.image" :src="item.image" class="news-image q-mt-xs" alt="">
-              <img v-else src="assets/images/icons/news.svg" class="news-image q-mt-xs" alt="">
+        <template v-if="!active_plan">
+          <div class="q-mt-md">
+            <div class="text-center">
+              <img src="@/assets/images/background/plan_need.svg" width="240" alt="">
             </div>
-            <div class="col-sm-9 col-xs-9 q-pa-sm ">
-              <div class="q-mt-lg">
-                <strong class="text-grey-10 font-14">{{item.title}}</strong>
-              </div>
+            <div class="text-center q-mt-sm">
+              <strong class="font-15">
+                برای مشاهده مقالات و نوشته ها باید اشتراک فعال داشته باشید
+              </strong>
             </div>
           </div>
-          </router-link>
+        </template>
+        <template v-else>
+          <template v-if="loading">
+            <global_loading_colorful :size="80" text="درحال دربافت نوشته ها"></global_loading_colorful>
+          </template>
+          <template v-else>
+            <div v-for="item in items">
+              <router-link :to="{name : 'posts_show', params:{slug:item.slug}}">
+                <div class="item-box q-mb-md row">
+                  <div class="col-sm-3 col-xs-3">
+                    <img v-if="item.image" :src="item.image" class="news-image q-mt-xs" alt="">
+                    <img v-else src="assets/images/icons/news.svg" class="news-image q-mt-xs" alt="">
+                  </div>
+                  <div class="col-sm-9 col-xs-9 q-pa-sm ">
+                    <div class="q-mt-lg">
+                      <strong class="text-grey-10 font-14">{{item.title}}</strong>
+                    </div>
+                  </div>
+                </div>
+              </router-link>
 
-        </div>
+            </div>
+          </template>
+        </template>
+
 
       </template>
+
     </q-card-section>
   </q-card>
 </template>
