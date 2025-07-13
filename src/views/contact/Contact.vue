@@ -35,30 +35,56 @@ export default {
     <q-card-section>
       <div class="row">
         <div class="col-sm-12 col-xs-12 col-md-12 q-pa-sm">
-          <div class="contact-item-box bg-purple-1">
-            <q-icon class="icon-size" name="fa-duotone fa-regular fa-phone-flip" color="pink-6"></q-icon>
-            <strong class="q-ml-sm text-grey-9 contact-title">شماره تماس : </strong>
-            <strong dir="ltr" class="float-right q-mt-xs text-pink-9 contact-info">0912 869 7954</strong>
+          <div class="contact-item-box bg-blue-grey-1">
+            <img src="@/assets/images/social/Viber.svg" class="icon-size" alt="">
+            <strong dir="ltr" class="float-right q-mt-md text-pink-9 contact-info">0912 869 7954</strong>
           </div>
         </div>
-        <div class="col-sm-12 col-xs-12 col-md-6 q-pa-sm">
-          <div class="contact-item-box bg-purple-1">
-            <q-icon class="icon-size" name="fa-brands fa-instagram" color="pink-6"></q-icon>
-            <strong class="q-ml-sm text-grey-9 contact-title">اینستاگرام : </strong>
-            <strong dir="ltr" class="float-right q-mt-xs text-pink-9 contact-info">
+        <div class="col-sm-12 col-xs-12 col-md-12 q-pa-sm">
+          <div class="contact-item-box bg-blue-grey-1">
+            <img src="@/assets/images/social/Instagram.svg" class="icon-size" alt="">
+            <strong dir="ltr" class="float-right q-mt-md text-pink-9 contact-info">
               <a href="https://instagram.com/sari.hair" target="_blank" class="text-pink-9">@sari.hair</a>
             </strong>
           </div>
         </div>
-        <div class="col-sm-12 col-xs-12 col-md-6 q-pa-sm">
-          <div class="contact-item-box bg-purple-1">
-            <q-icon class="icon-size" name="fa-brands  fa-telegram" color="pink-6"></q-icon>
-            <strong class="q-ml-sm text-grey-9 contact-title">تلگرام : </strong>
-            <strong dir="ltr" class="float-right q-mt-xs text-pink-9 contact-info">
+
+        <div class="col-sm-12 col-xs-12 col-md-12 q-pa-sm">
+          <div class="contact-item-box bg-blue-grey-1">
+            <img src="@/assets/images/social/Telegram.svg" class="icon-size" alt="">
+            <strong dir="ltr" class="float-right q-mt-md text-pink-9 contact-info">
               <a href="https://telegram.me/Academyjalaly" target="_blank" class="text-pink-9">@Academyjalaly</a>
             </strong>
           </div>
         </div>
+
+        <div class="col-sm-12 col-xs-12 col-md-12 q-pa-sm">
+          <div class="contact-item-box bg-blue-grey-1">
+            <img src="@/assets/images/social/Youtube.svg" class="icon-size" alt="">
+            <strong dir="ltr" class="float-right q-mt-md text-pink-9 contact-info">
+              <a href="https://youtube.com/@sarihair" target="_blank" class="text-pink-9">@Sarihair</a>
+            </strong>
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-xs-12 col-md-12 q-pa-sm">
+          <div class="contact-item-box bg-blue-grey-1">
+            <img src="@/assets/images/social/Tiktok.svg" class="icon-size" alt="">
+            <strong dir="ltr" class="float-right q-mt-md text-pink-9 contact-info">
+              <a href="https://tiktok.com/@sari_hair" target="_blank" class="text-pink-9">@Sari_hair</a>
+            </strong>
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-xs-12 col-md-12 q-pa-sm">
+          <div class="contact-item-box bg-blue-grey-1">
+            <img src="@/assets/images/social/aparat.svg" class="icon-size" alt="">
+            <strong dir="ltr" class="float-right q-mt-md text-pink-9 contact-info">
+              <a href="https://aparat.com/rezajalali_sarihair" target="_blank" class="text-pink-9">Sarihair</a>
+            </strong>
+          </div>
+        </div>
+
       </div>
     </q-card-section>
     <q-separator class="q-mt-md"/>
@@ -106,11 +132,11 @@ export default {
   font-size: 17.5px;
 }
 .contact-item-box{
-  padding : 18px 15px;
+  padding : 8px 15px;
   border-radius: 14px;
 }
 .icon-size{
-  font-size: 34px;
+  width: 65px;
 }
 .contact-title{
   font-size: 14px;
@@ -130,7 +156,7 @@ export default {
     font-size: 15px;
   }
   .icon-size{
-    font-size: 26px;
+    width: 45px;
   }
   .contact-title{
     font-size: 13px;

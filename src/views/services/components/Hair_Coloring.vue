@@ -590,8 +590,8 @@ export default {
 }
 .image-color{
   border-radius: 50%;
-  width: 85px;
-  height: 85px;
+  width: 85px !important;
+  height: 85px !important;
 }
 @media only screen and (max-width: 768px) {
 
@@ -625,8 +625,8 @@ export default {
   }
   .image-color{
     border-radius: 50%;
-    width: 65px;
-    height: 65px;
+    width: 65px !important;
+    height: 65px !important;
   }
   .bg-image{
     width: 250px !important;

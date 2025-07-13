@@ -8,7 +8,7 @@ export default {
   <div class="row">
     <div class="col-md-6 col-sm-12 col-xs-12 q-px-sm">
       <div class="text-center">
-        <img src="@/assets/images/icons/hair-spray-animate.svg" class="svg-animate" alt="">
+        <img src="@/assets/images/icons/jalali.png" class="svg-animate" alt="">
       </div>
     </div>
     <div class="col-md-6 col-sm-12 col-xs-12 q-px-sm">
@@ -30,7 +30,7 @@ export default {
 
 @media only screen and (max-width: 768px) {
 .svg-animate{
-  width: 300px;
+  width: 270px;
 }
 }
 
