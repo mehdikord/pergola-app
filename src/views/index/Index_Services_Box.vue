@@ -30,7 +30,7 @@ export default {
 
 @media only screen and (max-width: 768px) {
 .svg-animate{
-  width: 270px;
+  width: 300px;
 }
 }
 
