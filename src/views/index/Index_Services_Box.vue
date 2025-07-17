@@ -6,12 +6,12 @@ export default {
 
 <template>
   <div class="row">
-    <div class="col-md-6 col-sm-12 col-xs-12 q-px-sm">
+    <div class="col-md-12 col-sm-12 col-xs-12 q-px-sm text-center">
       <div class="text-center">
         <img src="@/assets/images/icons/jalali.png" class="svg-animate" alt="">
       </div>
     </div>
-    <div class="col-md-6 col-sm-12 col-xs-12 q-px-sm">
+    <div class="col-md-12 col-sm-12 col-xs-12 q-px-sm">
       <div class="text-center font-18 font-weight-600 text-pink-8">
         هوش مصنوعی رنگ مو
       </div>
@@ -27,7 +27,9 @@ export default {
 </template>
 
 <style scoped>
-
+.svg-animate{
+  width: 360px;
+}
 @media only screen and (max-width: 768px) {
 .svg-animate{
   width: 300px;
